@@ -1,0 +1,12 @@
+---
+- name: Install apache
+  apt:
+    name: apache2
+    state: present
+
+# - name: Copy app to Apache root
+#   copy:
+#     src: /home/squalli/Downloads/app
+#     dest: /var/www
+    
+# tasks file for installApache2

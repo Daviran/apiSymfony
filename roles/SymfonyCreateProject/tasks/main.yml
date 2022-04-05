@@ -1,0 +1,33 @@
+---
+- name: Switch user & Go in correct folder
+  become_user: squalli
+  shell:
+    cd ~
+
+    #- name: Reload bashrc
+    #  shell:
+    #    source ~/.bashrc
+    #  args:
+    #    executable: /bin/bash
+
+- name: Create a directory if it does not exist
+  ansible.builtin.file:
+    path: ~/SimpFunny
+    state: directory
+    mode: '0755'
+  become_user: squalli
+  become: yes
+
+- name: Create Symfony project
+  community.general.composer:
+    command: create-project
+    arguments: symfony/skeleton ~/SimpFunny ^5.4
+    working_dir: ~/SimpFunny
+  become_user: squalli
+  become: yes
+
+  #  shell:
+  #    composer.phar create-project symfony/skeleton SimpFunny ^5.4
+  #  become_user: squalli
+  #  become: yes
+# tasks file for SymfonyCreateProject

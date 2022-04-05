@@ -1,0 +1,61 @@
+---
+- name: install MariaDB
+  apt:
+    name: mariadb-server
+    state: latest
+
+- name: install some packages
+  apt:
+    name:
+      - default-libmysqlclient-dev
+      - build-essential
+    state: present
+
+- name: install PyMySQL
+  pip:
+    name: pymysql
+    state: present
+
+# Databases
+#- name: create database
+#  mariadb_databases: []
+#    - name: nsapooldb
+#      collation: utf8_general_ci
+#      encoding: utf8
+
+# Users
+#- name: create database user
+#  mariadb_users: []
+#    - name: nsad04
+#      password: E24h7U5kA9HJhq5VM98pm7p5zmJpf8AK
+#      priv: "*.*:ALL"
+#      state: present
+
+- name: create database
+  community.mysql.mysql_db:
+    name: symfunny
+    state: present
+    login_user: root
+    login_unix_socket: /run/mysqld/mysqld.sock
+
+#- name: create database user
+#  community.mysql.mysql_user:
+#    name: orchestral
+#    password: password
+#    priv: '*.*:ALL,GRANT'
+#    login_user: root
+#    login_unix_socket: /run/mysqld/mysqld.sock
+#    state: present
+
+#- name: >
+#    Import symfunny.sql,
+#    similar to mysql -u orchestral -p password nsapool.sql
+#  community.mysql.mysql_db:
+#    state: import
+#    name: nsapool
+#    target: /var/www/app/symfunny.sql
+#    login_user: root
+#    login_unix_socket: /run/mysqld/mysqld.sock
+
+
+# tasks file for MariaDBInstall

@@ -1,0 +1,141 @@
+---
+#- name: Install php
+#  apt:
+#    name: software-properties-common
+#    state: present
+
+#- name: Repo PHP 7.3
+#  apt: 
+#    name: "ppa:ondrej/php"
+
+#- name: updating the repo
+#  apt:
+#    update_cache: yes
+
+- name: Install Php7.4
+  apt:
+    name: php
+    state: present
+
+- name: Install cli-module          
+  apt:
+    name: php-cli
+    state: present
+
+- name: Install fpm-module          
+  apt:
+    name: php-fpm
+    state: present
+
+- name: Install json-module          
+  apt:
+    name: php-json
+    state: present
+
+- name: Install pdo-module          
+  apt:
+    name: php-pdo
+    state: present
+
+- name: Install mysql-module          
+  apt:
+    name: php-mysql
+    state: present
+
+- name: Install zip-module          
+  apt:
+    name: php-zip
+    state: present
+
+- name: Install gd-module          
+  apt:
+    name: php-gd
+    state: present
+
+- name: Install mbstring-module          
+  apt:
+    name: php-mbstring
+    state: present
+
+- name: Install curl-module       
+  apt:
+    name: php-curl
+    state: present
+
+- name: Install xml-module          
+  apt:
+    name: php-xml
+    state: present
+
+- name: Install pear-module          
+  apt:
+    name: php-pear
+    state: present
+
+- name: Install bcmath-module          
+  apt:
+    name: php-bcmath
+    state: present
+
+- name: Install intl-module         
+  apt:
+    name: php-intl
+    state: present
+
+- name: Set date.timezone for CLI
+  become: true
+  lineinfile:
+    dest: /etc/php/7.4/cli/php.ini
+    regexp: "date.timezone ="
+    line: "date.timezone = Europe/Paris"
+
+- name: Check if composer.phar
+  stat:
+    path: /usr/local/bin/composer
+  register: file_exists
+
+- name: Check if composer-setup
+  stat:
+    path: /tmp/composer-setup.php
+  register: cp_exists
+
+- name: Download Composer
+  get_url:
+    url: https://getcomposer.org/installer
+    dest: /tmp/composer-setup.php
+  when: not cp_exists.stat.exists
+
+
+- name: Fresh install_v1
+  shell: |
+    cd ~
+    rm -rf .cache/composer
+  when: not file_exists.stat.exists
+
+- name: Fresh install_v2
+  shell: |
+    cd /home/squalli
+    rm -rf .cache/composer
+  when: not file_exists.stat.exists
+
+- name: Install Composer
+  command: php /tmp/composer-setup.php
+  when: not file_exists.stat.exists
+
+- name: Setup Global Composer
+  become: true
+  shell:
+    mv composer.phar /usr/local/bin/composer
+  when: not file_exists.stat.exists
+
+- name: Write alias composer
+  become: true
+  lineinfile:
+    path: /home/squalli/.bashrc
+    state: absent
+    regexp: 'composer'
+    line: "alias composer='/usr/local/bin/composer.phar'"
+  # shell:
+  #  echo "alias composer='/usr/local/bin/composer.phar'" > ~/.bashrc
+
+# tasks file for PhPInstall

@@ -1,0 +1,14 @@
+---
+- name: Configure server
+
+  hosts: server1
+  roles:
+    - changeServerName
+#    - createUser
+#    - loginMsg
+    - fullInstall
+#    - { role: adfinis-sygroup.motd }
+    - installApache2
+    - PhPInstall
+    - SymfonyCreateProject
+    - MariaDBInstall

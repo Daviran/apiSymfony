@@ -1,0 +1,8 @@
+---
+- name: create user
+  user:
+    name: fonny
+    password: fonny 
+
+  
+# tasks file for createUser

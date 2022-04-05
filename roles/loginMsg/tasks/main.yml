@@ -1,0 +1,7 @@
+---
+-  name: login message
+   shell:
+     echo -------------------------------------------------------
+            You just logged in on your best server experience ! >> /etc/motd
+          -------------------------------------------------------
+# tasks file for loginMsg
