@@ -1,0 +1,3 @@
+adminEcommerce
+mdp: motdepasse1
+db: ecommerce
