@@ -13,9 +13,21 @@ class OrdersController extends AbstractController
      */
     public function index(): Response
     {
-        return $this->json([
-            'message' => 'Welcome to your new controller!',
-            'path' => 'src/Controller/OrdersController.php',
-        ]);
+        $orders = $this->getDoctrine()
+            ->getRepository(Orders::class)
+            ->findAll();
+ 
+        $data = [];
+
+        foreach ($orders as $order) {
+            $data[] = [
+                'id' => $order->getId(),
+                'totalPrice' => $order->getTotalPrice(),
+                'creationDate' => $order->getCreationDate(),
+                'products' => $order->getProducts(), 
+            ];
+         }
+
+        return $this->json([$data]);
     }
 }

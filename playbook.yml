@@ -3,6 +3,7 @@
 
   hosts: server1
   roles:
+    - checkDistribution
     - changeServerName
 #    - createUser
 #    - loginMsg
