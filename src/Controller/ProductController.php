@@ -35,7 +35,7 @@ class ProductController extends AbstractController
         return $this->json($data);
     }
     /**
-     * @Route("/project", name="project_new", methods={"POST"})
+     * @Route("/product", name="project_new", methods={"POST"})
      */
     public function new(Request $request): Response
     {

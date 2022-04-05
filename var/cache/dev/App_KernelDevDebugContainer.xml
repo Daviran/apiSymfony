@@ -87,7 +87,6 @@
     <parameter key="session.save_path">/home/daviran/Epitech/ECommerce/var/cache/dev/sessions</parameter>
     <parameter key="session.metadata.update_threshold">0</parameter>
     <parameter key="data_collector.templates" type="collection"/>
-    <parameter key="fos_rest.format_listener.rules">null</parameter>
     <parameter key="doctrine.dbal.logger.chain.class">Doctrine\DBAL\Logging\LoggerChain</parameter>
     <parameter key="doctrine.dbal.logger.profiling.class">Doctrine\DBAL\Logging\DebugStack</parameter>
     <parameter key="doctrine.dbal.logger.class">Symfony\Bridge\Doctrine\Logger\DbalLogger</parameter>
@@ -167,7 +166,13 @@
       <tag name="controller.service_arguments"/>
       <tag name="routing.route_loader"/>
     </service>
-    <service id="App\Controller\LuckyNumber" class="App\Controller\LuckyNumber" autowire="true" autoconfigure="true"/>
+    <service id="App\Controller\OrdersController" class="App\Controller\OrdersController" public="true" autowire="true" autoconfigure="true">
+      <tag name="controller.service_arguments"/>
+      <tag name="container.service_subscriber"/>
+      <call method="setContainer">
+        <argument type="service" id=".service_locator.GNc8e5B.App\Controller\OrdersController"/>
+      </call>
+    </service>
     <service id="App\Controller\ProductController" class="App\Controller\ProductController" public="true" autowire="true" autoconfigure="true">
       <tag name="controller.service_arguments"/>
       <tag name="container.service_subscriber"/>
@@ -960,14 +965,6 @@
       <argument type="service" id="debug.stopwatch"/>
       <argument type="service" id="logger" on-invalid="null"/>
       <argument type="service" id="request_stack" on-invalid="null"/>
-      <call method="addListener">
-        <argument>kernel.request</argument>
-        <argument type="collection">
-          <argument type="service_closure" id="fos_rest.format_listener"/>
-          <argument>onKernelRequest</argument>
-        </argument>
-        <argument>34</argument>
-      </call>
       <call method="addListener">
         <argument>kernel.response</argument>
         <argument type="collection">
@@ -2456,29 +2453,6 @@
     <service id="fos_rest.serializer.form_error_normalizer" class="FOS\RestBundle\Serializer\Normalizer\FormErrorNormalizer">
       <tag name="serializer.normalizer" priority="-10"/>
     </service>
-    <service id="fos_rest.format_listener" class="FOS\RestBundle\EventListener\FormatListener">
-      <tag name="kernel.event_listener" event="kernel.request" method="onKernelRequest" priority="34"/>
-      <tag name="container.hot_path"/>
-      <argument type="service" id="fos_rest.format_negotiator"/>
-    </service>
-    <service id="fos_rest.format_negotiator" class="FOS\RestBundle\Negotiation\FormatNegotiator">
-      <argument type="service" id="request_stack"/>
-      <call method="add">
-        <argument type="service" id="fos_rest.request_matcher.2364365e6bb6bfd5cadeda231e59db9139fadac2b673beb794ba3c0068839a899dc3c386"/>
-        <argument type="collection">
-          <argument key="prefer_extension" type="string">2.0</argument>
-          <argument key="fallback_format">json</argument>
-          <argument key="priorities" type="collection">
-            <argument>json</argument>
-            <argument>html</argument>
-          </argument>
-          <argument key="methods">null</argument>
-          <argument key="attributes" type="collection"/>
-          <argument key="stop">false</argument>
-        </argument>
-      </call>
-    </service>
-    <service id="fos_rest.format_request_matcher" class="Symfony\Component\HttpFoundation\RequestMatcher" abstract="true"/>
     <service id="doctrine.dbal.logger.chain" class="Doctrine\DBAL\Logging\LoggerChain">
       <argument type="collection">
         <argument type="service" id="doctrine.dbal.logger"/>
@@ -3205,6 +3179,9 @@
       <tag name="maker.command"/>
       <argument>/home/daviran/Epitech/ECommerce</argument>
     </service>
+    <service id=".instanceof.Symfony\Contracts\Service\ServiceSubscriberInterface.0.App\Controller\OrdersController" class="App\Controller\OrdersController" autowire="true" abstract="true"/>
+    <service id=".instanceof.Symfony\Bundle\FrameworkBundle\Controller\AbstractController.0.App\Controller\OrdersController" class="App\Controller\OrdersController" autowire="true" abstract="true"/>
+    <service id=".abstract.instanceof.App\Controller\OrdersController" class="App\Controller\OrdersController" autowire="true" autoconfigure="true" abstract="true"/>
     <service id=".instanceof.Symfony\Contracts\Service\ServiceSubscriberInterface.0.App\Controller\ProductController" class="App\Controller\ProductController" autowire="true" abstract="true"/>
     <service id=".instanceof.Symfony\Bundle\FrameworkBundle\Controller\AbstractController.0.App\Controller\ProductController" class="App\Controller\ProductController" autowire="true" abstract="true"/>
     <service id=".abstract.instanceof.App\Controller\ProductController" class="App\Controller\ProductController" autowire="true" autoconfigure="true" abstract="true"/>
@@ -3587,13 +3564,6 @@
       <argument type="service" id="debug.argument_resolver.not_tagged_controller.inner"/>
       <argument type="service" id="debug.stopwatch"/>
     </service>
-    <service id="fos_rest.request_matcher.2364365e6bb6bfd5cadeda231e59db9139fadac2b673beb794ba3c0068839a899dc3c386" class="Symfony\Component\HttpFoundation\RequestMatcher">
-      <argument>^/api</argument>
-      <argument>null</argument>
-      <argument>null</argument>
-      <argument>null</argument>
-      <argument type="collection"/>
-    </service>
     <service id="fos_rest.serializer.form_error_handler" class="FOS\RestBundle\Serializer\Normalizer\FormErrorHandler">
       <tag name="jms_serializer.subscribing_handler"/>
       <argument type="service" id="fos_rest.serializer.form_error_handler.inner"/>
@@ -3637,6 +3607,12 @@
         <argument key="router" type="service_closure" id="router.default" on-invalid="ignore"/>
         <argument key="session" type="service_closure" id=".session.deprecated" on-invalid="ignore"/>
       </argument>
+    </service>
+    <service id=".service_locator.GNc8e5B.App\Controller\OrdersController" class="Symfony\Component\DependencyInjection\ServiceLocator">
+      <tag name="container.service_locator_context" id="App\Controller\OrdersController"/>
+      <argument>App\Controller\OrdersController</argument>
+      <argument type="service" id="service_container"/>
+      <factory service=".service_locator.GNc8e5B" method="withContext"/>
     </service>
     <service id=".service_locator.GNc8e5B.App\Controller\ProductController" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator_context" id="App\Controller\ProductController"/>

@@ -390,7 +390,16 @@ class ComposerStaticInit71745041c752386e9b9e4ab459b998cc
     );
 
     public static $classMap = array (
+        'App\\Controller\\OrdersController' => __DIR__ . '/../..' . '/src/Controller/OrdersController.php',
+        'App\\Controller\\ProductController' => __DIR__ . '/../..' . '/src/Controller/ProductController.php',
+        'App\\Controller\\UserController' => __DIR__ . '/../..' . '/src/Controller/UserController.php',
+        'App\\Entity\\Orders' => __DIR__ . '/../..' . '/src/Entity/Orders.php',
+        'App\\Entity\\Product' => __DIR__ . '/../..' . '/src/Entity/Product.php',
+        'App\\Entity\\Users' => __DIR__ . '/../..' . '/src/Entity/Users.php',
         'App\\Kernel' => __DIR__ . '/../..' . '/src/Kernel.php',
+        'App\\Repository\\OrdersRepository' => __DIR__ . '/../..' . '/src/Repository/OrdersRepository.php',
+        'App\\Repository\\ProductRepository' => __DIR__ . '/../..' . '/src/Repository/ProductRepository.php',
+        'App\\Repository\\UsersRepository' => __DIR__ . '/../..' . '/src/Repository/UsersRepository.php',
         'Attribute' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/Attribute.php',
         'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
         'Doctrine\\Bundle\\DoctrineBundle\\Attribute\\AsEntityListener' => __DIR__ . '/..' . '/doctrine/doctrine-bundle/Attribute/AsEntityListener.php',
