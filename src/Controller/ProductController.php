@@ -64,7 +64,7 @@ class ProductController extends AbstractController
  
         if (!$product) {
  
-            return $this->json('No product found for id' . $id, 404);
+            return $this->json('Error'.' No product found for id' . $id, 404);
         }
  
         $data =  [
@@ -86,7 +86,7 @@ class ProductController extends AbstractController
         $product = $entityManager->getRepository(Product::class)->find($id);
  
         if (!$product) {
-            return $this->json('No product found for id' . $id, 404);
+            return $this->json('Error :'.' No product found for id' . $id, 404);
         }
  
         $product->setName($request->request->get('name'));
