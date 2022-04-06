@@ -9,13 +9,23 @@ use Symfony\Component\Routing\Annotation\Route;
 class UserController extends AbstractController
 {
     /**
-     * @Route("/user", name="app_user")
+     * @Route("/api/register", name="register_user")
      */
     public function index(): Response
     {
         return $this->json([
             'message' => 'Welcome to your new controller!',
             'path' => 'src/Controller/UserController.php',
+        ]);
+    }
+    /**
+     * @Route("/api/user", name="user_show")
+     */
+    public function show(): Response
+    {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        return $this->render('dashboard/index.html.twig', [
+            'controller_name' => 'DashboardController',
         ]);
     }
 }
