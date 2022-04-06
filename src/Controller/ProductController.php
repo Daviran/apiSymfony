@@ -11,7 +11,7 @@ use App\Entity\Product;
 class ProductController extends AbstractController
 {
     /**
-     * @Route("/product", name="app_product")
+     * @Route("/api/products", name="app_product")
      */
     public function index(): Response
     {
@@ -35,7 +35,7 @@ class ProductController extends AbstractController
         return $this->json($data);
     }
     /**
-     * @Route("/product", name="project_new", methods={"POST"})
+     * @Route("/api/product", name="project_new", methods={"POST"})
      */
     public function new(Request $request): Response
     {
@@ -54,17 +54,17 @@ class ProductController extends AbstractController
     }
 
     /**
-     * @Route("/product/{id}", name="product_show", methods={"GET"})
+     * @Route("/api/products/{productId}", name="product_show", methods={"GET"})
      */
-    public function show(int $id): Response
+    public function show(int $productId): Response
     {
         $product = $this->getDoctrine()
             ->getRepository(Product::class)
-            ->find($id);
+            ->find($productId);
  
         if (!$product) {
  
-            return $this->json('Error'.' No product found for id' . $id, 404);
+            return $this->json('Error'.' No product found for id' . $productId, 404);
         }
  
         $data =  [
