@@ -13,6 +13,12 @@ DirectoryIndex index.php
 
 # Disabling MultiViews prevents unwanted negotiation, e.g. "/index" should not resolve
 # to the front controller "/index.php" but be rewritten to "/index.php/index".
+<VirtualHost *:80>
+
+	DocumentRoot /var/www/app/public
+
+    <Directory /var/www/project/public>
+        AllowOverride None
 <IfModule mod_negotiation.c>
     Options -MultiViews
 </IfModule>
@@ -64,3 +70,5 @@ DirectoryIndex index.php
         # RedirectTemp cannot be used instead
     </IfModule>
 </IfModule>
+</Directory>
+</VirtualHost>
