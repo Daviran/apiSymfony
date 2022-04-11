@@ -38,7 +38,10 @@ class ProductController extends AbstractController
      * @Route("/api/product", name="project_new", methods={"POST"})
      */
     public function new(Request $request): Response
+    
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
         $entityManager = $this->getDoctrine()->getManager();
  
         $product = new Product();
@@ -54,7 +57,7 @@ class ProductController extends AbstractController
     }
 
     /**
-     * @Route("/api/products/{productId}", name="product_show", methods={"GET"})
+     * @Route("/api/product/{productId}", name="product_show", methods={"GET"})
      */
     public function show(int $productId): Response
     {
@@ -78,7 +81,7 @@ class ProductController extends AbstractController
         return $this->json($data);
     }
     /**
-     * @Route("/product/{id}", name="product_edit", methods={"PUT"})
+     * @Route("/api/product/{id}", name="product_edit", methods={"PUT"})
      */
     public function edit(Request $request, int $id): Response
     {
@@ -107,12 +110,12 @@ class ProductController extends AbstractController
         return $this->json($data);
     }
     /**
-     * @Route("/product/{id}", name="product_delete", methods={"DELETE"})
+     * @Route("/api/product/{id}", name="product_delete", methods={"DELETE"})
      */
     public function delete(int $id): Response
     {
         $entityManager = $this->getDoctrine()->getManager();
-        $product = $entityManager->getRepository(Project::class)->find($id);
+        $product = $entityManager->getRepository(Product::class)->find($id);
  
         if (!$product) {
             return $this->json('No product found for id' . $id, 404);
