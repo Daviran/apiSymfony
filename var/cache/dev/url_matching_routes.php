@@ -19,20 +19,24 @@ return [
     ],
     [ // $regexpList
         0 => '{^(?'
-                .'|/api/product/([^/]++)(?'
-                    .'|(*:31)'
-                    .'|(*:38)'
+                .'|/api/(?'
+                    .'|cart/([^/]++)(*:28)'
+                    .'|product/([^/]++)(?'
+                        .'|(*:54)'
+                        .'|(*:61)'
+                    .')'
                 .')'
-                .'|/_error/(\\d+)(?:\\.([^/]++))?(*:74)'
+                .'|/_error/(\\d+)(?:\\.([^/]++))?(*:98)'
             .')/?$}sDu',
     ],
     [ // $dynamicRoutes
-        31 => [[['_route' => 'product_show', '_controller' => 'App\\Controller\\ProductController::show'], ['productId'], ['GET' => 0], null, false, true, null]],
-        38 => [
+        28 => [[['_route' => 'add.cart', '_controller' => 'App\\Controller\\CartController::detail'], ['productId'], ['POST' => 0], null, false, true, null]],
+        54 => [[['_route' => 'product_show', '_controller' => 'App\\Controller\\ProductController::show'], ['productId'], ['GET' => 0], null, false, true, null]],
+        61 => [
             [['_route' => 'product_edit', '_controller' => 'App\\Controller\\ProductController::edit'], ['id'], ['PUT' => 0], null, false, true, null],
             [['_route' => 'product_delete', '_controller' => 'App\\Controller\\ProductController::delete'], ['id'], ['DELETE' => 0], null, false, true, null],
         ],
-        74 => [
+        98 => [
             [['_route' => '_preview_error', '_controller' => 'error_controller::preview', '_format' => 'html'], ['code', '_format'], null, null, false, true, null],
             [null, null, null, null, false, false, 0],
         ],
