@@ -17,7 +17,7 @@ DirectoryIndex index.php
 
 	DocumentRoot /var/www/app/public
 
-    <Directory /var/www/project/public>
+    <Directory /var/www/app/public>
         AllowOverride None
 <IfModule mod_negotiation.c>
     Options -MultiViews
