@@ -5,7 +5,7 @@
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'reference' => '38f64e388bdd2bc4adfea0bc5701964825cd269a',
+        'reference' => 'a23fa482792b5a62c6a5c0b1f228660880c71010',
         'name' => '__root__',
         'dev' => true,
     ),
@@ -16,7 +16,7 @@
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
-            'reference' => '38f64e388bdd2bc4adfea0bc5701964825cd269a',
+            'reference' => 'a23fa482792b5a62c6a5c0b1f228660880c71010',
             'dev_requirement' => false,
         ),
         'doctrine/annotations' => array(
@@ -74,12 +74,12 @@
             'dev_requirement' => false,
         ),
         'doctrine/doctrine-bundle' => array(
-            'pretty_version' => '2.6.1',
-            'version' => '2.6.1.0',
+            'pretty_version' => '2.6.2',
+            'version' => '2.6.2.0',
             'type' => 'symfony-bundle',
             'install_path' => __DIR__ . '/../doctrine/doctrine-bundle',
             'aliases' => array(),
-            'reference' => 'b7002752b555cb61cc9ca8d4c89a5b6e8200f765',
+            'reference' => '53cf797feda995299629bed081ffb51776f36e9f',
             'dev_requirement' => false,
         ),
         'doctrine/doctrine-migrations-bundle' => array(
@@ -146,12 +146,12 @@
             'dev_requirement' => false,
         ),
         'doctrine/persistence' => array(
-            'pretty_version' => '2.4.1',
-            'version' => '2.4.1.0',
+            'pretty_version' => '2.5.0',
+            'version' => '2.5.0.0',
             'type' => 'library',
             'install_path' => __DIR__ . '/../doctrine/persistence',
             'aliases' => array(),
-            'reference' => '092a52b71410ac1795287bb5135704ef07d18dd0',
+            'reference' => 'f8776dd9a0bdcd838812951a75f4ada72065a82a',
             'dev_requirement' => false,
         ),
         'doctrine/sql-formatter' => array(
@@ -233,12 +233,12 @@
             ),
         ),
         'phpstan/phpdoc-parser' => array(
-            'pretty_version' => '1.4.2',
-            'version' => '1.4.2.0',
+            'pretty_version' => '1.4.3',
+            'version' => '1.4.3.0',
             'type' => 'library',
             'install_path' => __DIR__ . '/../phpstan/phpdoc-parser',
             'aliases' => array(),
-            'reference' => '4cb3021a4e10ffe3d5f94a4c34cf4b3f6de2fa3d',
+            'reference' => '34545bb30a6f8bd86cfa371dbd42140a657bbf0d',
             'dev_requirement' => false,
         ),
         'psr/cache' => array(
@@ -306,6 +306,15 @@
             'provided' => array(
                 0 => '1.0|2.0',
             ),
+        ),
+        'symfony/apache-pack' => array(
+            'pretty_version' => 'v1.0.1',
+            'version' => '1.0.1.0',
+            'type' => 'symfony-pack',
+            'install_path' => __DIR__ . '/../symfony/apache-pack',
+            'aliases' => array(),
+            'reference' => '3aa5818d73ad2551281fc58a75afd9ca82622e6c',
+            'dev_requirement' => false,
         ),
         'symfony/cache' => array(
             'pretty_version' => 'v5.4.7',

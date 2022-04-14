@@ -5,11 +5,11 @@
   roles:
     - checkDistribution
     - changeServerName
-#    - createUser
-#    - loginMsg
+    - createUser
+    - loginMsg
     - fullInstall
 #    - { role: adfinis-sygroup.motd }
     - installApache2
     - PhPInstall
-    - SymfonyCreateProject
     - MariaDBInstall
+    - SymfonyCreateProject

@@ -469,13 +469,16 @@ class ComposerStaticInit71745041c752386e9b9e4ab459b998cc
     );
 
     public static $classMap = array (
+        'App\\Controller\\DashboardController' => __DIR__ . '/../..' . '/src/Controller/DashboardController.php',
         'App\\Controller\\OrdersController' => __DIR__ . '/../..' . '/src/Controller/OrdersController.php',
         'App\\Controller\\ProductController' => __DIR__ . '/../..' . '/src/Controller/ProductController.php',
+        'App\\Controller\\RegistrationController' => __DIR__ . '/../..' . '/src/Controller/RegistrationController.php',
         'App\\Controller\\SecurityController' => __DIR__ . '/../..' . '/src/Controller/SecurityController.php',
         'App\\Controller\\UserController' => __DIR__ . '/../..' . '/src/Controller/UserController.php',
         'App\\Entity\\Orders' => __DIR__ . '/../..' . '/src/Entity/Orders.php',
         'App\\Entity\\Product' => __DIR__ . '/../..' . '/src/Entity/Product.php',
         'App\\Entity\\User' => __DIR__ . '/../..' . '/src/Entity/User.php',
+        'App\\Form\\RegistrationFormType' => __DIR__ . '/../..' . '/src/Form/RegistrationFormType.php',
         'App\\Kernel' => __DIR__ . '/../..' . '/src/Kernel.php',
         'App\\Repository\\OrdersRepository' => __DIR__ . '/../..' . '/src/Repository/OrdersRepository.php',
         'App\\Repository\\ProductRepository' => __DIR__ . '/../..' . '/src/Repository/ProductRepository.php',

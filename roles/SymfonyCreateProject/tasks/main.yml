@@ -1,9 +1,4 @@
 ---
-- name: Switch user & Go in correct folder
-  become_user: squalli
-  shell:
-    cd ~
-
     #- name: Reload bashrc
     #  shell:
     #    source ~/.bashrc
@@ -12,19 +7,95 @@
 
 - name: Create a directory if it does not exist
   ansible.builtin.file:
-    path: ~/SimpFunny
+    path: /var/www/app
     state: directory
     mode: '0755'
-  become_user: squalli
-  become: yes
+  
+- name: Check if folder is empty
+  find:
+    paths: '/var/www/app/'
+  register: filesFound
 
-- name: Create Symfony project
-  community.general.composer:
-    command: create-project
-    arguments: symfony/skeleton ~/SimpFunny ^5.4
-    working_dir: ~/SimpFunny
-  become_user: squalli
+  #- name: transfer sshKey
+  #  become: yes
+  #  copy:
+  #    src: /home/squalli/.ssh/epitech/
+  #    dest: /home/root/.ssh/
+  #    force: no
+  #    mode: '0600'
+
+- name: git clone project to remote
   become: yes
+  git:
+    repo: https://github.com/EdPaillard/EcommPub.git
+    dest: /var/www/app
+    single_branch: yes
+    #    version: master
+  when: filesFound.matched == 0
+
+- name: Pull from git
+  git:
+    repo: https://github.com/EdPaillard/EcommPub.git
+    dest: /var/www/app
+    update: yes
+    force: yes
+    #    version: master
+
+    #- name: Copy project folder to remote
+    #  become: true
+    #  copy:
+    #    src: /home/squalli/Documents/VMSymf/
+    #    dest: /var/www/app/
+    #  when: filesFound.matched == 0
+
+- name: Copy content htaccess into server conf
+  become: yes
+  shell:
+    cat /var/www/app/public/.htaccess > /etc/apache2/sites-enabled/000-default.conf
+
+- name: Delete htaccess
+  become: yes
+  shell:
+    rm -rf /var/www/app/public/.htaccess
+
+  #- name: Clone and install a project with all dependencies
+  #  become_user: fonny
+  #  become: yes
+  #  community.general.composer:
+  #    command: create-project
+  #    arguments: symfony/project /home/squalli/Documents/Simp_Fonny/
+  #    working_dir: /var/www/app
+  #    prefer_dist: yes
+ 
+- name: Permissions management
+  become: yes
+  shell:
+    chmod 666 /var/www/app/composer.json && chmod 666 /var/www/app/composer.lock
+
+- name: Setup Symfony project
+  become: yes
+  community.general.composer:
+    command: install
+    working_dir: /var/www/app
+
+- name: Restart Apache2 server
+  become: yes
+  shell:
+    systemctl restart apache2
+
+    #- name: launch symfony server
+    #  become_user: fonny
+    #  become: yes
+    #  shell: cd /var/www/app && symfony server:start
+
+  #- name: Create Symfony project
+  #  community.general.composer:
+  #    command: create-project
+  #    arguments: symfony/skeleton ~/SimpFunny ^5.4
+  #    working_dir: ~/SimpFunny
+  #  become_user: fonny
+  #  become: yes
+  #  when: filesFound.matched == 0
 
   #  shell:
   #    composer.phar create-project symfony/skeleton SimpFunny ^5.4
