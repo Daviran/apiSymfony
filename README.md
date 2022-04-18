@@ -29,7 +29,7 @@ At this point, you should be able to deploy the server using the following comma
 ansible-playbook playbook.yml -i [path/to/ansible/project]
 ```
 
-##Visit and Buy
+## Visit and Buy
 ```
 simp-funny:80
 ```
