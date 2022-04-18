@@ -12,9 +12,23 @@ First, create a ssh-key using:
 ```
 ssh-keygen
 ```
+You'll need to allow root ssh connection. On your VM, go to
+```
+cd /etc/ssh/
+```
+and
+```
+nano sshd_config
+```
+You should find a whole comment configuration:
+![alt text](https://github.com/EpitechMscProPromo2024/T-WEB-600-LIL-6-1-ecommerce-david.bugnon/tree/master/Doc/sshd_conf.png?raw=true)
+
+Change it in order to get this:
+![alt text](https://github.com/EpitechMscProPromo2024/T-WEB-600-LIL-6-1-ecommerce-david.bugnon/tree/master/Doc/sshd_conf_new.png?raw=true)
+
 Then, copy the key on remote using:
 ```
-ssh-copy-id -i [path/to/your/pubkey] [remote ip address]
+ssh-copy-id -i [path/to/your/pubkey] root@[remote ip address]
 ```
 Make sure the ip address is correctly setup in the ansible project directory in the hosts file
 
