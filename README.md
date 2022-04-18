@@ -43,9 +43,19 @@ At this point, you should be able to deploy the server using the following comma
 ansible-playbook playbook.yml -i [path/to/ansible/project]
 ```
 
+### Cosmetic, yet mandatory feature
+Let's write a line in your /etc/hosts
+```
+sudo vim /etc/hosts
+```
+Who said DNS was hard ?
+```
+[remote address ip]    simpfunny.epi
+```
+
 ## Visit and Buy
 ```
-simp-funny:80
+http://simpfunny:80
 ```
 
 # Enjoy !
