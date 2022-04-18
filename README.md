@@ -20,6 +20,11 @@ Make sure the ip address is correctly setup in the ansible project directory in 
 
 
 ## Click and deploy
+In order for the mariaDB role to work, you have ton install and ansible module
+```
+ansible-galaxy collection install community.mysql
+```
+At this point, you should be able to deploy the server using the following command:
 ```
 ansible-playbook playbook.yml -i [path/to/ansible/project]
 ```
