@@ -34,7 +34,7 @@ Make sure the ip address is correctly setup in the ansible project directory in 
 
 
 ## Click and deploy
-In order for the mariaDB role to work, you have ton install and ansible module
+In order for the mariaDB role to work, you have to install an ansible module
 ```
 ansible-galaxy collection install community.mysql
 ```
