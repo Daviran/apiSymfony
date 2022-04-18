@@ -21,10 +21,10 @@ and
 nano sshd_config
 ```
 You should find a whole comment configuration:
-![alt text](https://github.com/EpitechMscProPromo2024/T-WEB-600-LIL-6-1-ecommerce-david.bugnon/tree/master/Doc/sshd_conf.png?raw=true)
+![Commented configuration](https://github.com/EpitechMscProPromo2024/T-WEB-600-LIL-6-1-ecommerce-david.bugnon/tree/master/Doc/sshd_conf.png?raw=true)
 
 Change it in order to get this:
-![alt text](https://github.com/EpitechMscProPromo2024/T-WEB-600-LIL-6-1-ecommerce-david.bugnon/tree/master/Doc/sshd_conf_new.png?raw=true)
+![Setup configuration](https://github.com/EpitechMscProPromo2024/T-WEB-600-LIL-6-1-ecommerce-david.bugnon/tree/master/Doc/sshd_conf_new.png?raw=true)
 
 Then, copy the key on remote using:
 ```
