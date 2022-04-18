@@ -20,7 +20,7 @@ and
 ```
 nano sshd_config
 ```
-You should find a whole comment configuration:
+You should find a whole commented configuration:
 ![Commented configuration](https://github.com/EpitechMscProPromo2024/T-WEB-600-LIL-6-1-ecommerce-david.bugnon/tree/master/Doc/sshd_conf.png?raw=true)
 
 Change it in order to get this:
