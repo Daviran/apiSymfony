@@ -34,4 +34,4 @@ ansible-playbook playbook.yml -i [path/to/ansible/project]
 simp-funny:80
 ```
 
-# Enjoy !
+# Please enjoy !
