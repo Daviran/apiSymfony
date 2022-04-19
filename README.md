@@ -21,9 +21,11 @@ and
 nano sshd_config
 ```
 You should find a whole commented configuration:
+
 ![Commented configuration](https://raw.githubusercontent.com/EpitechMscProPromo2024/T-WEB-600-LIL-6-1-ecommerce-david.bugnon/master/Doc/sshd_conf.png?token=GHSAT0AAAAAABTWN4V2AAOH66TYYKXGMKPYYS6OTQA)
 
 Change it in order to get this:
+
 ![Setup configuration](https://raw.githubusercontent.com/EpitechMscProPromo2024/T-WEB-600-LIL-6-1-ecommerce-david.bugnon/master/Doc/sshd_conf_new.png?token=GHSAT0AAAAAABTWN4V2DSSIFOFDPUKIW4KKYS6OULQ)
 
 Then, copy the key on remote using:
