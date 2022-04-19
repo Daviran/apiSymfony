@@ -2,61 +2,104 @@
 
 namespace App\Controller;
 
+use App\Entity\User;
+use App\Form\RegistrationFormType;
+use App\Security\AppCustomAuthenticator;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
-
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Http\Authentication\UserAuthenticatorInterface;
 
 class UserController extends AbstractController
 {
+    
     /**
-     * @Route("/user", name="user")
-     */
-    public function index(): Response
-    {
-        return $this->json([
-            'message' => 'Welcome to your new controller!',
-            'path' => 'src/Controller/UserController.php',
-        ]);
-    }
-    /**
-     * @Route("/api/user", name="user_show")
+     * @Route("/api/users", name="user_show", methods={"GET"})
      */
     public function show(): Response
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
-        return $this->render('dashboard/index.html.twig', [
-            'controller_name' => 'UserName?',
-        ]);
+        
+        // returns your User object, or null if the user is not authenticated
+        // use inline documentation to tell your editor your exact User class
+        /** @var \App\Entity\User $user */
+
+        $user = $this->getUser();
+        if (!$user) {
+ 
+            return $this->json('Error'.' No user found ');
+        }
+ 
+        $data =  [
+            'email' => $user->getEmail(),
+            'firstname' => $user->getFirstname(),
+            'lastname' => $user->getLastname(),
+        ];
+         
+        return $this->json($data);
     }
     /**
-     * @Route("/product/user", name="user_edit", methods={"PUT"})
+     * @Route("/api/users", name="user_show", methods={"PUT"})
      */
-    // public function edit(Request $request, string $user): Response
-    // {
-    //     $entityManager = $this->getDoctrine()->getManager();
-    //     $user = $entityManager->getRepository(Product::class)->find($user);
- 
-    //     if (!$product) {
-    //         return $this->json('Error :'.' No product found for id' . $id, 404);
-    //     }
- 
-    //     $product->setName($request->request->get('name'));
-    //     $product->setDescription($request->request->get('description'));
-    //     $product->setPhoto($request->request->get('photo'));
-    //     $product->setPrice($request->request->get('price'));
+    public function edit(Request $request): Response
+    {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $entityManager = $this->getDoctrine()->getManager();
 
-    //     $entityManager->flush();
+        // returns your User object, or null if the user is not authenticated
+        // use inline documentation to tell your editor your exact User class
+        /** @var \App\Entity\User $user */
+
+        $user = $this->getUser();
+        if (!$user) {
  
-    //     $data =  [
-    //         'id' => $product->getId(),
-    //         'name' => $product->getName(),
-    //         'description' => $product->getDescription(),
-    //         'photo' => $product->getPhoto(),
-    //         'price' => $product->getPrice(),
-    //     ];
+            return $this->json('Error'.' No user found ');
+        }
+        $user->setEmail($request->request->get('email'));
+        $user->setFirstname($request->request->get('firstname'));
+        $user->setLastname($request->request->get('lastname'));
+        $entityManager->flush();
+
+        $data =  [
+            'email' => $user->getEmail(),
+            'firstname' => $user->getFirstname(),
+            'lastname' => $user->getLastname(),
+        ];
          
-    //     return $this->json($data);
-    // }
+        return $this->json($data);
+    }
+    /**
+     * @Route("/api/user", name="app_register")
+     */
+    public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, UserAuthenticatorInterface $userAuthenticator): Response
+    {
+
+        $entityManager = $this->getDoctrine()->getManager();
+ 
+        $user = new User();
+        $user->setEmail($request->request->get('email'));
+        $user->setLogin($request->request->get('login'));
+        $user->setFirstname($request->request->get('firstname'));
+        $user->setLastname($request->request->get('lastname'));
+        // comment hash le password? 
+        // comment recup le token?? 
+        $user->setPassword($request->request->get('password'));
+
+        $entityManager->persist($user);
+        $entityManager->flush();
+ 
+        $data =  [
+            'login' => $user->getLogin(),
+            'email' => $user->getEmail(),
+            'password' => $user->getPassword(),
+            'firstname' => $user->getFirstname(),
+            'lastname' => $user->getLastname(),
+        ];
+
+        return $this->json($data);
+    
+    }
 }
