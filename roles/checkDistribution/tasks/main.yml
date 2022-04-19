@@ -1,0 +1,9 @@
+---
+- block:
+    - name: End play if wrong 
+      debug:
+        msg: "Distribution is not Debian 11(Bullseye), end of the play"
+
+    - meta: end_host
+  when: (ansible_distribution != "Debian" or ansible_distribution_major_version != "11")
+# tasks file for checkDistribution

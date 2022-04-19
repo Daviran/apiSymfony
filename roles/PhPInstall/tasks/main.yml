@@ -128,14 +128,19 @@
     mv composer.phar /usr/local/bin/composer
   when: not file_exists.stat.exists
 
-- name: Write alias composer
-  become: true
-  lineinfile:
-    path: /home/squalli/.bashrc
-    state: absent
-    regexp: 'composer'
-    line: "alias composer='/usr/local/bin/composer.phar'"
-  # shell:
-  #  echo "alias composer='/usr/local/bin/composer.phar'" > ~/.bashrc
+- name: download symfony rep
+  become: yes
+  shell:
+    echo 'deb [trusted=yes] https://repo.symfony.com/apt/ /' | tee /etc/apt/sources.list.d/symfony-cli.list
+
+- name: update apt
+  become: yes
+  shell:
+    apt update
+ 
+- name: Install symfony
+  become: yes
+  shell:
+    apt install -y symfony-cli
 
 # tasks file for PhPInstall
