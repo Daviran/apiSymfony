@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Product;
+use App\Controller\ApiController;
 use App\Form\AddToCartType;
 use App\Manager\CartManager;
 use App\Repository\ProductRepository;
@@ -15,7 +16,7 @@ use Symfony\Component\Routing\Annotation\Route;
  * Class CartController
  * @package App\Controller
  */
-class CartController extends AbstractController
+class CartController extends ApiController
 {
     // ...
 
@@ -24,23 +25,23 @@ class CartController extends AbstractController
      */
     public function detail(int $productId, Request $request, CartManager $cartManager)
     {
-        // $form = $this->createForm(AddToCartType::class);
+        $form = $this->createForm(AddToCartType::class);
         $product = $this->getDoctrine()
         ->getRepository(Product::class)
         ->find($productId);
         // $form->handleRequest($request);
 
         // if ($form->isSubmitted() && $form->isValid()) {
-            // $item = $form->getData();
+            $item = $form->getData();
             // $item->setProduct($product);
-
+            $item->setProduct($product);
             $cart = $cartManager->getCurrentCart();
             $cart
-                ->addItem($product)
+                ->addItem($item)
                 ->setUpdatedAt(new \DateTime());
 
             $cartManager->save($cart);
 
-        return $this->json('Produit ajouté: ' . $product->getId() .':' . $product->getName());
+        return $this->json('Produit ajouté au cart: ' . $product->getId() .':' . $product->getName());
     }
 }

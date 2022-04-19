@@ -1,19 +1,21 @@
 <?php
 
 namespace App\Controller;
-
+use App\Controller\ApiController;
 use App\Entity\User;
 use App\Form\RegistrationFormType;
 use App\Security\AppCustomAuthenticator;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\DBAL\Driver\Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasher;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Authentication\UserAuthenticatorInterface;
 
-class UserController extends AbstractController
+class UserController extends ApiController
 {
     
     /**
@@ -72,7 +74,7 @@ class UserController extends AbstractController
         return $this->json($data);
     }
     /**
-     * @Route("/api/user", name="app_register")
+     * @Route("/api/register", name="app_register")
      */
     public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, UserAuthenticatorInterface $userAuthenticator): Response
     {
@@ -84,13 +86,16 @@ class UserController extends AbstractController
         $user->setLogin($request->request->get('login'));
         $user->setFirstname($request->request->get('firstname'));
         $user->setLastname($request->request->get('lastname'));
-        // comment hash le password? 
-        // comment recup le token?? 
-        $user->setPassword($request->request->get('password'));
+        $user->setPassword($userPasswordHasher->hashPassword($user,$request->request->get('password')));
 
-        $entityManager->persist($user);
-        $entityManager->flush();
- 
+        try {
+            $entityManager->persist($user);
+            $entityManager->flush();
+
+             } catch (Exception $e) {
+                 return $this->respondValidationError($e->getMessage());
+        }
+        
         $data =  [
             'login' => $user->getLogin(),
             'email' => $user->getEmail(),
