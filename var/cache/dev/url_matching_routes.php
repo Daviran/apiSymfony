@@ -12,10 +12,8 @@ return [
         '/api/product' => [[['_route' => 'project_new', '_controller' => 'App\\Controller\\ProductController::new'], null, ['POST' => 0], null, false, false, null]],
         '/api/login' => [[['_route' => 'app_login', '_controller' => 'App\\Controller\\SecurityController::login'], null, null, null, false, false, null]],
         '/logout' => [[['_route' => 'app_logout', '_controller' => 'App\\Controller\\SecurityController::logout'], null, null, null, false, false, null]],
-        '/api/user' => [
-            [['_route' => 'user_show', '_controller' => 'App\\Controller\\UserController::edit'], null, ['PUT' => 0], null, false, false, null],
-            [['_route' => 'app_register', '_controller' => 'App\\Controller\\UserController::register'], null, null, null, false, false, null],
-        ],
+        '/api/users' => [[['_route' => 'user_show', '_controller' => 'App\\Controller\\UserController::edit'], null, ['PUT' => 0], null, false, false, null]],
+        '/api/user' => [[['_route' => 'app_register', '_controller' => 'App\\Controller\\UserController::register'], null, null, null, false, false, null]],
         '/lucky/number' => [[['_route' => 'app_lucky_number', '_controller' => 'App\\Controller\\LuckyController::number'], null, null, null, false, false, null]],
     ],
     [ // $regexpList

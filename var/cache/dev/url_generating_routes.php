@@ -11,7 +11,7 @@ return [
     'product_delete' => [['id'], ['_controller' => 'App\\Controller\\ProductController::delete'], [], [['variable', '/', '[^/]++', 'id', true], ['text', '/api/product']], [], [], []],
     'app_login' => [[], ['_controller' => 'App\\Controller\\SecurityController::login'], [], [['text', '/api/login']], [], [], []],
     'app_logout' => [[], ['_controller' => 'App\\Controller\\SecurityController::logout'], [], [['text', '/logout']], [], [], []],
-    'user_show' => [[], ['_controller' => 'App\\Controller\\UserController::edit'], [], [['text', '/api/user']], [], [], []],
+    'user_show' => [[], ['_controller' => 'App\\Controller\\UserController::edit'], [], [['text', '/api/users']], [], [], []],
     'app_register' => [[], ['_controller' => 'App\\Controller\\UserController::register'], [], [['text', '/api/user']], [], [], []],
     '_preview_error' => [['code', '_format'], ['_controller' => 'error_controller::preview', '_format' => 'html'], ['code' => '\\d+'], [['variable', '.', '[^/]++', '_format', true], ['variable', '/', '\\d+', 'code', true], ['text', '/_error']], [], [], []],
     'app_lucky_number' => [[], ['_controller' => 'App\\Controller\\LuckyController::number'], [], [['text', '/lucky/number']], [], [], []],
