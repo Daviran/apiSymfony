@@ -12,9 +12,9 @@ use App\Entity\Product;
 class ProductController extends ApiController
 {
     /**
-     * @Route("/api/products", name="app_product")
+     * @Route("/api/products", name="app_product", methods={"GET"})
      */
-    public function index(): Response
+    public function showAll(): Response
     {
         $products = $this->getDoctrine()
             ->getRepository(Product::class)

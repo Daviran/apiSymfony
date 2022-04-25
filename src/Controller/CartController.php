@@ -20,28 +20,28 @@ class CartController extends ApiController
 {
     // ...
 
-    /**
-     * @Route("/api/cart/{productId}", name="add.cart", methods={"POST"})
-     */
-    public function detail(int $productId, Request $request, CartManager $cartManager)
-    {
-        $form = $this->createForm(AddToCartType::class);
-        $product = $this->getDoctrine()
-        ->getRepository(Product::class)
-        ->find($productId);
-        // $form->handleRequest($request);
+    // /**
+    //  * @Route("/api/cart/{productId}", name="add.cart", methods={"POST"})
+    //  */
+    // public function detail(int $productId, Request $request, CartManager $cartManager)
+    // {
+    //     $form = $this->createForm(AddToCartType::class);
+    //     $product = $this->getDoctrine()
+    //     ->getRepository(Product::class)
+    //     ->find($productId);
+    //     // $form->handleRequest($request);
 
-        // if ($form->isSubmitted() && $form->isValid()) {
-            $item = $form->getData();
-            // $item->setProduct($product);
-            $item->setProduct($product);
-            $cart = $cartManager->getCurrentCart();
-            $cart
-                ->addItem($item)
-                ->setUpdatedAt(new \DateTime());
+    //     // if ($form->isSubmitted() && $form->isValid()) {
+    //         $item = $form->getData();
+    //         // $item->setProduct($product);
+    //         $item->setProduct($product);
+    //         $cart = $cartManager->getCurrentCart();
+    //         $cart
+    //             ->addItem($item)
+    //             ->setUpdatedAt(new \DateTime());
 
-            $cartManager->save($cart);
+    //         $cartManager->save($cart);
 
-        return $this->json('Produit ajouté au cart: ' . $product->getId() .':' . $product->getName());
-    }
+    //     return $this->json('Produit ajouté au cart: ' . $product->getId() .':' . $product->getName());
+    // }
 }

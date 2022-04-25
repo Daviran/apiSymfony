@@ -68,6 +68,7 @@ return array(
     'Laminas\\Code\\' => array($vendorDir . '/laminas/laminas-code/src'),
     'JMS\\Serializer\\' => array($vendorDir . '/jms/serializer/src'),
     'JMS\\SerializerBundle\\' => array($vendorDir . '/jms/serializer-bundle'),
+    'Firebase\\JWT\\' => array($vendorDir . '/firebase/php-jwt/src'),
     'FOS\\RestBundle\\' => array($vendorDir . '/friendsofsymfony/rest-bundle'),
     'Doctrine\\SqlFormatter\\' => array($vendorDir . '/doctrine/sql-formatter/src'),
     'Doctrine\\Persistence\\' => array($vendorDir . '/doctrine/persistence/src/Persistence'),

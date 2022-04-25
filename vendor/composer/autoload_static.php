@@ -106,6 +106,7 @@ class ComposerStaticInit71745041c752386e9b9e4ab459b998cc
         ),
         'F' => 
         array (
+            'Firebase\\JWT\\' => 13,
             'FOS\\RestBundle\\' => 15,
         ),
         'D' => 
@@ -382,6 +383,10 @@ class ComposerStaticInit71745041c752386e9b9e4ab459b998cc
         array (
             0 => __DIR__ . '/..' . '/jms/serializer-bundle',
         ),
+        'Firebase\\JWT\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/firebase/php-jwt/src',
+        ),
         'FOS\\RestBundle\\' => 
         array (
             0 => __DIR__ . '/..' . '/friendsofsymfony/rest-bundle',
@@ -469,6 +474,7 @@ class ComposerStaticInit71745041c752386e9b9e4ab459b998cc
     );
 
     public static $classMap = array (
+        'App\\Controller\\ApiController' => __DIR__ . '/../..' . '/src/Controller/ApiController.php',
         'App\\Controller\\CartController' => __DIR__ . '/../..' . '/src/Controller/CartController.php',
         'App\\Controller\\ProductController' => __DIR__ . '/../..' . '/src/Controller/ProductController.php',
         'App\\Controller\\RegistrationController' => __DIR__ . '/../..' . '/src/Controller/RegistrationController.php',
@@ -1692,6 +1698,12 @@ class ComposerStaticInit71745041c752386e9b9e4ab459b998cc
         'FOS\\RestBundle\\View\\View' => __DIR__ . '/..' . '/friendsofsymfony/rest-bundle/View/View.php',
         'FOS\\RestBundle\\View\\ViewHandler' => __DIR__ . '/..' . '/friendsofsymfony/rest-bundle/View/ViewHandler.php',
         'FOS\\RestBundle\\View\\ViewHandlerInterface' => __DIR__ . '/..' . '/friendsofsymfony/rest-bundle/View/ViewHandlerInterface.php',
+        'Firebase\\JWT\\BeforeValidException' => __DIR__ . '/..' . '/firebase/php-jwt/src/BeforeValidException.php',
+        'Firebase\\JWT\\ExpiredException' => __DIR__ . '/..' . '/firebase/php-jwt/src/ExpiredException.php',
+        'Firebase\\JWT\\JWK' => __DIR__ . '/..' . '/firebase/php-jwt/src/JWK.php',
+        'Firebase\\JWT\\JWT' => __DIR__ . '/..' . '/firebase/php-jwt/src/JWT.php',
+        'Firebase\\JWT\\Key' => __DIR__ . '/..' . '/firebase/php-jwt/src/Key.php',
+        'Firebase\\JWT\\SignatureInvalidException' => __DIR__ . '/..' . '/firebase/php-jwt/src/SignatureInvalidException.php',
         'IntlDateFormatter' => __DIR__ . '/..' . '/symfony/polyfill-intl-icu/Resources/stubs/IntlDateFormatter.php',
         'JMS\\SerializerBundle\\Cache\\CacheClearer' => __DIR__ . '/..' . '/jms/serializer-bundle/Cache/CacheClearer.php',
         'JMS\\SerializerBundle\\Cache\\CacheWarmer' => __DIR__ . '/..' . '/jms/serializer-bundle/Cache/CacheWarmer.php',

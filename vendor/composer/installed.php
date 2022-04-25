@@ -5,7 +5,7 @@
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'reference' => '17dea51de14c8d4332a7bd8b46ddc4aff191c566',
+        'reference' => 'dfd6ae718d05ff71efbfe264838dfe3373368c3f',
         'name' => '__root__',
         'dev' => true,
     ),
@@ -16,7 +16,7 @@
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
-            'reference' => '17dea51de14c8d4332a7bd8b46ddc4aff191c566',
+            'reference' => 'dfd6ae718d05ff71efbfe264838dfe3373368c3f',
             'dev_requirement' => false,
         ),
         'doctrine/annotations' => array(
@@ -161,6 +161,15 @@
             'install_path' => __DIR__ . '/../doctrine/sql-formatter',
             'aliases' => array(),
             'reference' => '20c39c2de286a9d3262cc8ed282a4ae60e265894',
+            'dev_requirement' => false,
+        ),
+        'firebase/php-jwt' => array(
+            'pretty_version' => 'v6.1.2',
+            'version' => '6.1.2.0',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../firebase/php-jwt',
+            'aliases' => array(),
+            'reference' => 'c297139da7c6873dbd67cbd1093f09ec0bbd0c50',
             'dev_requirement' => false,
         ),
         'friendsofphp/proxy-manager-lts' => array(

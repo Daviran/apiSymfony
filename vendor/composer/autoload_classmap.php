@@ -6,6 +6,7 @@ $vendorDir = dirname(__DIR__);
 $baseDir = dirname($vendorDir);
 
 return array(
+    'App\\Controller\\ApiController' => $baseDir . '/src/Controller/ApiController.php',
     'App\\Controller\\CartController' => $baseDir . '/src/Controller/CartController.php',
     'App\\Controller\\ProductController' => $baseDir . '/src/Controller/ProductController.php',
     'App\\Controller\\RegistrationController' => $baseDir . '/src/Controller/RegistrationController.php',
@@ -1229,6 +1230,12 @@ return array(
     'FOS\\RestBundle\\View\\View' => $vendorDir . '/friendsofsymfony/rest-bundle/View/View.php',
     'FOS\\RestBundle\\View\\ViewHandler' => $vendorDir . '/friendsofsymfony/rest-bundle/View/ViewHandler.php',
     'FOS\\RestBundle\\View\\ViewHandlerInterface' => $vendorDir . '/friendsofsymfony/rest-bundle/View/ViewHandlerInterface.php',
+    'Firebase\\JWT\\BeforeValidException' => $vendorDir . '/firebase/php-jwt/src/BeforeValidException.php',
+    'Firebase\\JWT\\ExpiredException' => $vendorDir . '/firebase/php-jwt/src/ExpiredException.php',
+    'Firebase\\JWT\\JWK' => $vendorDir . '/firebase/php-jwt/src/JWK.php',
+    'Firebase\\JWT\\JWT' => $vendorDir . '/firebase/php-jwt/src/JWT.php',
+    'Firebase\\JWT\\Key' => $vendorDir . '/firebase/php-jwt/src/Key.php',
+    'Firebase\\JWT\\SignatureInvalidException' => $vendorDir . '/firebase/php-jwt/src/SignatureInvalidException.php',
     'IntlDateFormatter' => $vendorDir . '/symfony/polyfill-intl-icu/Resources/stubs/IntlDateFormatter.php',
     'JMS\\SerializerBundle\\Cache\\CacheClearer' => $vendorDir . '/jms/serializer-bundle/Cache/CacheClearer.php',
     'JMS\\SerializerBundle\\Cache\\CacheWarmer' => $vendorDir . '/jms/serializer-bundle/Cache/CacheWarmer.php',

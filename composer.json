@@ -10,6 +10,7 @@
         "doctrine/doctrine-bundle": "^2.6",
         "doctrine/doctrine-migrations-bundle": "^3.2",
         "doctrine/orm": "^2.11",
+        "firebase/php-jwt": "^6.1",
         "friendsofsymfony/rest-bundle": "^3.3",
         "jms/serializer-bundle": "^4.0",
         "symfony/apache-pack": "^1.0",

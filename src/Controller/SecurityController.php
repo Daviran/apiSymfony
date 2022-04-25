@@ -2,46 +2,36 @@
 
 namespace App\Controller;
 
-use App\Entity\User;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Response;
+use App\Repository\UserRepository;
+use \Firebase\JWT\JWT;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
-use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
-use Symfony\Component\Security\Core\Security;
-use Symfony\Component\Security\Http\Authenticator\AbstractLoginFormAuthenticator;
-use Symfony\Component\Security\Http\Authenticator\Passport\Badge\CsrfTokenBadge;
-use Symfony\Component\Security\Http\Authenticator\Passport\Badge\UserBadge;
-use Symfony\Component\Security\Http\Authenticator\Passport\Credentials\PasswordCredentials;
-use Symfony\Component\Security\Http\Authenticator\Passport\Passport;
-use Symfony\Component\Security\Http\Util\TargetPathTrait;
-class SecurityController extends AbstractController
+
+class SecurityController extends ApiController
 {
     /**
-     * @Route("/api/login", name="app_login")
+     * @Route("/api/login", name="app_login", methods={"POST"})
      */
-    public function login(AuthenticationUtils $authenticationUtils): Response
+    public function login(Request $request, UserRepository $userRepository, UserPasswordHasherInterface $encoder)
     {
-        // if ($this->getUser()) {
-        //     return $this->redirectToRoute('target_path');
-        // }
-
-        // get the login error if there is one
-        $error = $authenticationUtils->getLastAuthenticationError();
-        // last username entered by the user
-        $lastUsername = $authenticationUtils->getLastUsername();
-
-        return $this->render('security/login.html.twig', ['last_username' => $lastUsername, 'error' => $error]);
+        $request = $this->transformJsonBody($request);
+        $user = $userRepository->findOneBy([
+        'email' => $request->get('email'),
+        ]);
+    if (!$user || !$encoder->isPasswordValid($user, $request->get('password'))) {
+        return $this->json([
+            'message' => 'Wrong credentials',
+        ]);
     }
-
-    /**
-     * @Route("/logout", name="app_logout")
-     */
-    public function logout(): void
-    {
-        throw new \LogicException('This method can be blank - it will be intercepted by the logout key on your firewall.');
-    }
+    $payload = [
+        "user" => $user->getEmail(),
+        "exp" => (new \DateTime())->modify("+5 minutes")->getTimestamp(),
+    ];
+    $jwt = JWT::encode($payload, $this->getParameter('jwt_secret'), 'HS256');
+    return $this->json([
+        'token' => $jwt,
+    ]);
+    }       
+    
 }
