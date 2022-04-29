@@ -59,7 +59,7 @@ class OrderItemRepository extends ServiceEntityRepository
         return $query->getOneOrNullResult();
     }
 
-    public function findOneFirst(): ?OrderItem
+    public function findFirst(): ?OrderItem
     {
         $entityManager = $this->getEntityManager();
 

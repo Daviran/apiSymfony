@@ -73,4 +73,13 @@ class OrderRepository extends ServiceEntityRepository
         ;
     }
     */
+    public function findFirst(): ?Order
+    {
+        $entityManager = $this->getEntityManager();
+
+        $query = $entityManager->createQuery('SELECT o
+            FROM App\Entity\Order o');
+
+        return $query->getOneOrNullResult();
+    }
 }
