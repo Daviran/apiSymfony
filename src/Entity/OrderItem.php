@@ -3,6 +3,10 @@
 namespace App\Entity;
 
 use App\Repository\OrderItemRepository;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Serializer\Annotation\Ignore;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -17,81 +21,50 @@ class OrderItem
      */
     private $id;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Product::class)
-     * @ORM\JoinColumn(nullable=false)
+   /**
+     * @ORM\OneToMany(targetEntity=Product::class, mappedBy="cart")
+     * @Ignore()
      */
     private $product;
 
-    /**
-     * @ORM\Column(type="integer")
-     */
-    private $quantity;
+    public function __construct()
+    {
+        $this->product = new ArrayCollection();
+    }
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Order::class, inversedBy="items")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $orderRef;
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getProduct(): ?Product
+    /**
+     * @return Collection<int, Product>
+     */
+    public function getProduct(): Collection
     {
         return $this->product;
     }
 
-    public function setProduct(?Product $product): self
+    public function addProduct(Product $product): self
     {
-        $this->product = $product;
+        if (!$this->product->contains($product)) {
+            $this->product[] = $product;
+            $product->setCart($this);
+        }
 
         return $this;
     }
 
-    public function getQuantity(): ?int
+    public function removeProduct(Product $product): self
     {
-        return $this->quantity;
-    }
-
-    public function setQuantity(int $quantity): self
-    {
-        $this->quantity = $quantity;
-
-        return $this;
-    }
-    
-    public function getOrderRef(): ?Order
-    {
-        return $this->orderRef;
-    }
-
-    public function setOrderRef(?Order $orderRef): self
-    {
-        $this->orderRef = $orderRef;
+        if ($this->product->removeElement($product)) {
+            // set the owning side to null (unless already changed)
+            if ($product->getCart() === $this) {
+                $product->setCart(null);
+            }
+        }
 
         return $this;
     }
-    /**
- * Tests if the given item given corresponds to the same order item.
- *
- * @param OrderItem $item
- *
- * @return bool
- */
-public function equals(OrderItem $item): bool
-{
-    return $this->getProduct()->getId() === $item->getProduct()->getId();
-}
-/**
- * Calculates the item total.
- *
- * @return float|int
- */
-public function getTotal(): float
-{
-    return $this->getProduct()->getPrice() * $this->getQuantity();
-}
 
 }

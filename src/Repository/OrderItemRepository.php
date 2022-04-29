@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\OrderItem;
+use App\Entity\Product;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
@@ -44,7 +45,29 @@ class OrderItemRepository extends ServiceEntityRepository
             $this->_em->flush();
         }
     }
+    public function findOneByIdJoinedToCategory(int $productId): ?Product
+    {
+        $entityManager = $this->getEntityManager();
 
+        $query = $entityManager->createQuery(
+            'SELECT p, c
+            FROM App\Entity\Product p
+            INNER JOIN p.cart c
+            WHERE p.id = :id'
+        )->setParameter('id', $productId);
+
+        return $query->getOneOrNullResult();
+    }
+
+    public function findOneFirst(): ?OrderItem
+    {
+        $entityManager = $this->getEntityManager();
+
+        $query = $entityManager->createQuery('SELECT c
+            FROM App\Entity\OrderItem c');
+
+        return $query->getOneOrNullResult();
+    }
     // /**
     //  * @return OrderItem[] Returns an array of OrderItem objects
     //  */

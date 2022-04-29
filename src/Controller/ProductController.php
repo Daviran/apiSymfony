@@ -36,7 +36,7 @@ class ProductController extends ApiController
         return $this->json($data);
     }
     /**
-     * @Route("/api/product", name="project_new", methods={"POST"})
+     * @Route("/api/products", name="project_new", methods={"POST"})
      */
     public function new(Request $request): Response
     

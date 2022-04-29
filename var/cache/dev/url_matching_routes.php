@@ -8,8 +8,10 @@
 return [
     false, // $matchHost
     [ // $staticRoutes
-        '/api/products' => [[['_route' => 'app_product', '_controller' => 'App\\Controller\\ProductController::showAll'], null, ['GET' => 0], null, false, false, null]],
-        '/api/product' => [[['_route' => 'project_new', '_controller' => 'App\\Controller\\ProductController::new'], null, ['POST' => 0], null, false, false, null]],
+        '/api/products' => [
+            [['_route' => 'app_product', '_controller' => 'App\\Controller\\ProductController::showAll'], null, ['GET' => 0], null, false, false, null],
+            [['_route' => 'project_new', '_controller' => 'App\\Controller\\ProductController::new'], null, ['POST' => 0], null, false, false, null],
+        ],
         '/api/login' => [[['_route' => 'app_login', '_controller' => 'App\\Controller\\SecurityController::login'], null, ['POST' => 0], null, false, false, null]],
     ],
     [ // $regexpList

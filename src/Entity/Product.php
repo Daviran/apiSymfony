@@ -37,6 +37,18 @@ class Product
      */
     private $price;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Cart::class, inversedBy="product")
+     * @Ignore()
+     */
+    private $cart;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Order::class, inversedBy="product")
+     * @Ignore()
+     */
+    private $order;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -86,6 +98,29 @@ class Product
     public function setPrice(int $price): self
     {
         $this->price = $price;
+
+        return $this;
+    }
+    public function getOrder(): ?Order
+    {
+        return $this->ordr;
+    }
+
+    public function setOrder(?Order $ordr): self
+    {
+        $this->ordr = $ordr;
+
+        return $this;
+    }
+
+    public function getCart(): ?OrderItem
+    {
+        return $this->cart;
+    }
+
+    public function setCart(?OrderItem $cart): self
+    {
+        $this->cart = $cart;
 
         return $this;
     }

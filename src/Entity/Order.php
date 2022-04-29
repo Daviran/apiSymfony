@@ -18,25 +18,21 @@ class Order
      * @ORM\Column(type="integer")
      */
     private $id;
+ /**
+     * @ORM\OneToOne(targetEntity=Cart::class, cascade={"persist", "remove"})
+     * @Ignore()
+     */
+    private $cart;
 
     /**
-     * @ORM\OneToMany(targetEntity=OrderItem::class, mappedBy="orderRef",cascade={"persist", "remove"}, orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=Product::class, mappedBy="ordr")
      */
-    private $items;
-
-   /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $status = self::STATUS_CART;
+    private $products;
 
     /**
-     * An order that is in progress, not placed yet.
-     *
-     * @var string
+     * @ORM\Column(type="float", nullable=true)
      */
-    const STATUS_CART = 'cart';
-
-    
+    private $totalPrice;
     /**
      * @ORM\Column(type="datetime")
      */
