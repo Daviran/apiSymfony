@@ -28,7 +28,7 @@ class UserController extends ApiController
         $lastname = $request->get('lastname', '');
 
         if (empty($email) || empty($login) || empty($password)){
-            return $this->respondValidationError("Invalid Login or Password or Email or Firstname or Lastname");
+            return $this->respondValidationError("Invalid Credentials.");
         }
         $user->setLogin($login);
         $user->setEmail($email);
@@ -47,7 +47,7 @@ class UserController extends ApiController
         $serializer = $this->container->get('serializer');
         $reports = $serializer->serialize($user, 'json');
 
-        return $this->respondWithSuccess(sprintf('User %s successfully created', $user->getEmail()));
+        return $this->respondWithSuccess(sprintf('User %s  created', $user->getEmail()));
     }
     /**
      * @Route("/api/users", name="app_user_show", methods={"GET"})
@@ -61,6 +61,12 @@ class UserController extends ApiController
      */
     public function update(Request $request, UserPasswordHasherInterface $userPasswordHasher, UserAuthenticatorInterface $userAuthenticator): Response
     {
-        return new Response('users update');
+        $request = $this->transformJsonBody($request);
+        $email = $request->get('email', '');
+        $login = $request->get('login', '');
+        $firstname = $request->get('firstname', '');
+        $lastname = $request->get('lastname', '');
+
+        return new Response('Update of user:  ' . $email . $login ."firstname: ".$firstname . "\n lastname:" .$lastname );
     }
 }
