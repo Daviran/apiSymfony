@@ -1,0 +1,11 @@
+---
+- name: Deploy E-commerce Symfony server
+
+  hosts: server
+  roles:
+    - checkDistribution
+    - basicInstall
+    - phpGalaxySetup
+    - mariaDbSetup
+    - angularSetup
+    - serverDeployment

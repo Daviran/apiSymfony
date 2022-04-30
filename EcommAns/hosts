@@ -1,0 +1,5 @@
+
+[servers]
+server ansible_host=192.168.165.44 ansible_user=root
+[all:vars]
+ansible_python_interpreter=/usr/bin/python3

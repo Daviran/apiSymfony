@@ -1,0 +1,98 @@
+---
+- name: Create a directory if it does not exist
+  ansible.builtin.file:
+    path: /var/www/app
+    state: directory
+    mode: '0755'
+  
+- name: Check if folder is empty
+  find:
+    paths: '/var/www/app/'
+    patterns: '*.*'
+  register: filesFound
+
+- name: git clone project to remote
+  become: yes
+  git:
+    repo: https://github.com/EdPaillard/EcommPub.git
+    dest: /var/www/app
+    single_branch: yes
+  when: filesFound.matched == 0
+
+- name: Pull from git
+  git:
+    repo: https://github.com/EdPaillard/EcommPub.git
+    dest: /var/www/app
+    update: yes
+    force: yes
+  when: filesFound.matched != 0
+
+- name: Copy content htaccess into server conf
+  become: yes
+  shell:
+    cat /var/www/app/public/.htaccess > /etc/apache2/sites-enabled/000-default.conf
+
+- name: Make sure port 4200 is not already listened to
+  ansible.builtin.lineinfile:
+    path: /etc/apache2/ports.conf
+    regexp: '^Listen\ 4200'
+    state: absent
+
+- name: Server Listen to port 4200
+  ansible.builtin.lineinfile:
+    path: /etc/apache2/ports.conf
+    line: Listen 4200
+
+- name: Delete htaccess
+  file:
+    path: /var/www/app/public/.htaccess
+    state: absent
+
+- name: Enable proxy-http
+  shell:
+    a2enmod proxy_http
+
+- name: Enable rewrite mod
+  shell:
+    a2enmod rewrite
+
+- name: Install Angular npm dependencies
+  become: yes
+  community.general.npm:
+    path: /var/www/app/anguFront
+
+- name: Install Bootstrap
+  become: yes
+  community.general.npm:
+    name: bootstrap
+    path: /var/www/app/anguFront
+
+- name: Install Font-Awesome
+  become: yes
+  community.general.npm:
+    name: font-awesome
+    path: /var/www/app/anguFront
+
+- name: Setup Symfony project
+  become: yes
+  community.general.composer:
+    command: install
+    working_dir: /var/www/app
+
+- name: Permissions management
+  file:
+    path: /var/www/app
+    state: directory
+    recurse: yes
+    mode: u=rwX,g=rwX,o=rX
+    owner: www-data
+    group: www-data
+
+- name: Get server ip address
+  shell:
+    ip4=$(/sbin/ip -o -4 addr list enp0s3 | awk '{print $4}' | cut -d/ -f1) && echo $ip4 simpfunny.epi > /etc/hosts && echo BACKEND_URL=$ip4:4200 >> /var/www/app/.env
+
+- name: Restart Apache2 server
+  service:
+    name: apache2
+    state: restarted

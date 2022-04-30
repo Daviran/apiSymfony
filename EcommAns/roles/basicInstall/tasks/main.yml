@@ -1,0 +1,23 @@
+---
+# - name: Sudo install
+#   apt:
+#     name: sudo
+#     state: present
+
+- name: Apt update
+  apt:
+    name: "*"
+    state: latest
+
+- name: Basic install to setup VM
+  apt:
+    pkg:
+    - sudo
+    - vim
+    - tree
+    - git
+    - net-tools
+    - python3
+    - python3-pip
+    - apache2
+# tasks file for basicInstall

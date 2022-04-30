@@ -1,0 +1,19 @@
+---
+- name: Install NodeJS
+  become: yes
+  apt:
+    name: nodejs
+    state: present
+
+- name: Install npm
+  become: yes
+  apt:
+    name: npm
+    state: present
+
+- name: Install Angular NG
+  become: yes
+  npm:
+    name: '@angular/cli@12.0.2'
+    global: yes
+    state: present

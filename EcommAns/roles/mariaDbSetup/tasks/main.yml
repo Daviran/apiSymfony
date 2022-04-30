@@ -1,0 +1,34 @@
+---
+- name: Install MariaDB and dependencies
+  apt:
+    pkg:
+    - mariadb-server
+    - default-libmysqlclient-dev
+    - build-essential
+    state: present
+
+- name: Install PyMySQL
+  pip:
+    name: pymysql
+    state: present
+
+- name: Create database
+  # become_user: root
+  # become: yes
+  community.mysql.mysql_db:
+    name: SimpFunny
+    state: present
+    login_user: root
+    login_unix_socket: /run/mysqld/mysqld.sock
+
+- name: Create database user
+  # become_user: root
+  # become: yes
+  community.mysql.mysql_user:
+    name: adminEcommerce
+    password: motdepasse1
+    priv: '*.*:ALL'
+    login_user: root
+    login_unix_socket: /run/mysqld/mysqld.sock
+    state: present
+# tasks file for mariaDbSetup

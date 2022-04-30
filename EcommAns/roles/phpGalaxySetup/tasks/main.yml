@@ -1,0 +1,73 @@
+---
+- name: Install Php7.4 and modules
+  apt:
+    pkg:
+    - php7.4
+    - php-cli
+    - php-fpm
+    - php-json
+    - php-pdo
+    - php-mysql
+    - php-zip
+    - php-gd
+    - php-mbstring
+    - php-curl
+    - php-xml
+    - php-pear
+    - php-bcmath
+    - php-intl
+    - libapache2-mod-php
+
+- name: Check if composer.phar
+  stat:
+    path: /usr/local/bin/composer
+  register: file_exists
+
+- name: Check if composer.phar exists
+  stat:
+    path: /tmp/composer-setup/php
+  register: cp_exists
+
+- name: Download Composer
+  get_url:
+    url: https://getcomposer.org/installer
+    dest: /tmp/composer-setup.php
+  when: 
+    - not cp_exists.stat.exists 
+    - not file_exists.stat.exists
+
+- name: Fresh install_v1
+  shell: |
+    cd ~
+    rm -rf .cache/composer
+  when: not file_exists.stat.exists
+
+- name: Fresh install_v2
+  shell: |
+    cd /home/squalli
+    rm -rf .cache/composer
+  when: not file_exists.stat.exists
+
+- name: Install Composer
+  command: php /tmp/composer-setup.php
+  when: not file_exists.stat.exists
+
+- name: Setup Global Composer
+  become: true
+  shell:
+    mv composer.phar /usr/local/bin/composer
+  when: not file_exists.stat.exists
+
+- name: download symfony rep
+  shell:
+    echo 'deb [trusted=yes] https://repo.symfony.com/apt/ /' | tee /etc/apt/sources.list.d/symfony-cli.list
+
+- name: update apt
+  shell:
+    apt update
+ 
+- name: Install symfony
+  shell:
+    apt install -y symfony-cli
+
+# tasks file for phpGalaxySetup
