@@ -1,110 +1,66 @@
 <?php
 
 namespace App\Controller;
-use App\Controller\ApiController;
+
 use App\Entity\User;
-use App\Form\RegistrationFormType;
-use App\Security\AppCustomAuthenticator;
-use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\DBAL\Driver\Exception;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasher;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Authentication\UserAuthenticatorInterface;
 
 class UserController extends ApiController
 {
-    
-    // /**
-    //  * @Route("/api/users", name="user_show", methods={"GET"})
-    //  */
-    // public function show(): Response
-    // {
-    //     $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
-        
-    //     // returns your User object, or null if the user is not authenticated
-    //     // use inline documentation to tell your editor your exact User class
-    //     /** @var \App\Entity\User $user */
+    /**
+     * @Route("/api/register", name="app_register", methods={"POST"})
+     */
+    public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, UserAuthenticatorInterface $userAuthenticator): Response
+    {
+        $user = new User();
 
-    //     $user = $this->getUser();
-    //     if (!$user) {
- 
-    //         return $this->json('Error'.' No user found ');
-    //     }
- 
-    //     $data =  [
-    //         'email' => $user->getEmail(),
-    //         'firstname' => $user->getFirstname(),
-    //         'lastname' => $user->getLastname(),
-    //     ];
-         
-    //     return $this->json($data);
-    // }
-    // /**
-    //  * @Route("/api/users", name="user_show", methods={"PUT"})
-    //  */
-    // public function edit(Request $request): Response
-    // {
-    //     $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
-    //     $entityManager = $this->getDoctrine()->getManager();
+        $request = $this->transformJsonBody($request);
 
-    //     // returns your User object, or null if the user is not authenticated
-    //     // use inline documentation to tell your editor your exact User class
-    //     /** @var \App\Entity\User $user */
+        $email = $request->get('email', '');
+        $login = $request->get('login', '');
+        $password = $request->get('password', '');
+        $firstname = $request->get('firstname', '');
+        $lastname = $request->get('lastname', '');
 
-    //     $user = $this->getUser();
-    //     if (!$user) {
- 
-    //         return $this->json('Error'.' No user found ');
-    //     }
-    //     $user->setEmail($request->request->get('email'));
-    //     $user->setFirstname($request->request->get('firstname'));
-    //     $user->setLastname($request->request->get('lastname'));
-    //     $entityManager->flush();
+        if (empty($email) || empty($login) || empty($password)){
+            return $this->respondValidationError("Invalid Login or Password or Email or Firstname or Lastname");
+        }
+        $user->setLogin($login);
+        $user->setEmail($email);
+        $user->setFirstname($firstname);
+        $user->setLastname($lastname);
+        $user->setPassword($userPasswordHasher->hashPassword($user, $password));
+        $entityManager = $this->getDoctrine()->getManager();
 
-    //     $data =  [
-    //         'email' => $user->getEmail(),
-    //         'firstname' => $user->getFirstname(),
-    //         'lastname' => $user->getLastname(),
-    //     ];
-         
-    //     return $this->json($data);
-    // }
-    // /**
-    //  * @Route("/api/register", name="app_register")
-    //  */
-    // public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, UserAuthenticatorInterface $userAuthenticator): Response
-    // {
+        try {
+            $entityManager->persist($user);
+            $entityManager->flush();
+        } catch (Exception $e) {
+            return $this->respondValidationError($e->getMessage());
+        }
 
-    //     $entityManager = $this->getDoctrine()->getManager();
- 
-    //     $user = new User();
-    //     $user->setEmail($request->request->get('email'));
-    //     $user->setLogin($request->request->get('login'));
-    //     $user->setFirstname($request->request->get('firstname'));
-    //     $user->setLastname($request->request->get('lastname'));
-    //     $user->setPassword($userPasswordHasher->hashPassword($user,$request->request->get('password')));
+        $serializer = $this->container->get('serializer');
+        $reports = $serializer->serialize($user, 'json');
 
-    //     try {
-    //         $entityManager->persist($user);
-    //         $entityManager->flush();
-
-    //          } catch (Exception $e) {
-    //              return $this->respondValidationError($e->getMessage());
-    //     }
-        
-    //     $data =  [
-    //         'login' => $user->getLogin(),
-    //         'email' => $user->getEmail(),
-    //         'password' => $user->getPassword(),
-    //         'firstname' => $user->getFirstname(),
-    //         'lastname' => $user->getLastname(),
-    //     ];
-
-    //     return $this->json($data);
-    
-    // }
+        return $this->respondWithSuccess(sprintf('User %s successfully created', $user->getEmail()));
+    }
+    /**
+     * @Route("/api/users", name="app_user_show", methods={"GET"})
+     */
+    public function show(Request $request, UserPasswordHasherInterface $userPasswordHasher, UserAuthenticatorInterface $userAuthenticator): Response
+    {
+        return new Response('users information');
+    }
+    /**
+     * @Route("/api/users", name="app_user_update", methods={"PUT"})
+     */
+    public function update(Request $request, UserPasswordHasherInterface $userPasswordHasher, UserAuthenticatorInterface $userAuthenticator): Response
+    {
+        return new Response('users update');
+    }
 }

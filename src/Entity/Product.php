@@ -3,7 +3,12 @@
 namespace App\Entity;
 
 use App\Repository\ProductRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Ignore;
+use Symfony\Component\Validator\Constraints as Assert;
+
 
 /**
  * @ORM\Entity(repositoryClass=ProductRepository::class)
@@ -19,11 +24,12 @@ class Product
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\Unique
      */
     private $name;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $description;
 
@@ -33,21 +39,32 @@ class Product
     private $photo;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="float", nullable=true)
      */
     private $price;
-
-    /**
-     * @ORM\ManyToOne(targetEntity=Cart::class, inversedBy="product")
-     * @Ignore()
-     */
-    private $cart;
 
     /**
      * @ORM\ManyToOne(targetEntity=Order::class, inversedBy="product")
      * @Ignore()
      */
-    private $order;
+    private $ordr;
+
+    /**
+     * @ORM\ManyToMany(targetEntity=User::class, mappedBy="products")
+     * @Ignore()
+     */
+    private $users;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private bool $available = true;
+
+
+    public function __construct()
+    {
+        $this->users = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -59,9 +76,13 @@ class Product
         return $this->name;
     }
 
-    public function setName(string $name): self
+    public function setName(?string $name, $default = null): self
     {
-        $this->name = $name;
+        if (null != $default) {
+            $this->name = $default;
+        } else {
+            $this->name = $name;
+        }
 
         return $this;
     }
@@ -71,7 +92,7 @@ class Product
         return $this->description;
     }
 
-    public function setDescription(string $description): self
+    public function setDescription(?string $description): self
     {
         $this->description = $description;
 
@@ -90,39 +111,70 @@ class Product
         return $this;
     }
 
-    public function getPrice(): ?int
+    public function getPrice(): ?float
     {
         return $this->price;
     }
 
-    public function setPrice(int $price): self
+    public function setPrice(?float $price): self
     {
         $this->price = $price;
 
         return $this;
     }
-    public function getOrder(): ?Order
+
+    public function getOrdr(): ?Order
     {
         return $this->ordr;
     }
 
-    public function setOrder(?Order $ordr): self
+    public function setOrdr(?Order $ordr): self
     {
         $this->ordr = $ordr;
 
         return $this;
     }
 
-    public function getCart(): ?OrderItem
+    /**
+     * @return Collection<int, User>
+     */
+    public function getUsers(): Collection
     {
-        return $this->cart;
+        return $this->users;
     }
 
-    public function setCart(?OrderItem $cart): self
+    public function addUser(User $user): self
     {
-        $this->cart = $cart;
+        if (!$this->users->contains($user)) {
+            $this->users[] = $user;
+            $user->addProduct($this);
+        }
 
         return $this;
     }
 
+    public function removeUser(User $user): self
+    {
+        if ($this->users->removeElement($user)) {
+            $user->removeProduct($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isAvailable(): bool
+    {
+        return $this->available;
+    }
+
+    /**
+     * @param bool $available
+     */
+    public function setAvailable(bool $available): void
+    {
+        $this->available = $available;
+    }
 }

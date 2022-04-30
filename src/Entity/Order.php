@@ -1,10 +1,13 @@
 <?php
+
 namespace App\Entity;
 
 use App\Repository\OrderRepository;
+use Symfony\Component\Serializer\Annotation\Ignore;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=OrderRepository::class)
@@ -18,11 +21,6 @@ class Order
      * @ORM\Column(type="integer")
      */
     private $id;
- /**
-     * @ORM\OneToOne(targetEntity=Cart::class, cascade={"persist", "remove"})
-     * @Ignore()
-     */
-    private $cart;
 
     /**
      * @ORM\OneToMany(targetEntity=Product::class, mappedBy="ordr")
@@ -33,36 +31,26 @@ class Order
      * @ORM\Column(type="float", nullable=true)
      */
     private $totalPrice;
-    /**
-     * @ORM\Column(type="datetime")
-     */
-    private $createdAt;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="datetime", nullable=true)
      */
-    private $updatedAt;
+    private $creationDate;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="ordr")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $user;
 
     public function __construct()
     {
-        $this->items = new ArrayCollection();
+        $this->products = new ArrayCollection();
     }
 
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getCart(): ?OrderItem
-    {
-        return $this->cart;
-    }
-
-    public function setCart(?OrderItem $cart): self
-    {
-        $this->cart = $cart;
-
-        return $this;
     }
 
     /**
@@ -77,7 +65,7 @@ class Order
     {
         if (!$this->products->contains($products)) {
             $this->products[] = $products;
-            $products->setOrder($this);
+            $products->setOrdr($this);
         }
 
         return $this;
@@ -87,8 +75,8 @@ class Order
     {
         if ($this->products->removeElement($products)) {
             // set the owning side to null (unless already changed)
-            if ($products->getOrder() === $this) {
-                $products->setOrder(null);
+            if ($products->getOrdr() === $this) {
+                $products->setOrdr(null);
             }
         }
 
@@ -107,29 +95,27 @@ class Order
         return $this;
     }
 
-    public function getCreatedAt(): ?\DateTimeInterface
+    public function getCreationDate(): ?\DateTimeInterface
     {
-        return $this->createdAt;
+        return $this->creationDate;
     }
 
-    public function setCreatedAt(\DateTimeInterface $createdAt): self
+    public function setCreationDate(?\DateTimeInterface $creationDate): self
     {
-        $this->createdAt = $createdAt;
+        $this->creationDate = $creationDate;
 
         return $this;
     }
 
-    public function getUpdatedAt(): ?\DateTimeInterface
+    public function getUser(): ?User
     {
-        return $this->updatedAt;
+        return $this->user;
     }
 
-    public function setUpdatedAt(\DateTimeInterface $updatedAt): self
+    public function setUser(?User $user): self
     {
-        $this->updatedAt = $updatedAt;
+        $this->user = $user;
 
         return $this;
     }
-
-
 }

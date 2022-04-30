@@ -14,7 +14,7 @@ use Symfony\Component\Security\Core\User\UserProviderInterface;
 use Symfony\Component\Security\Guard\AbstractGuardAuthenticator;
 
 
-class ApiKeyAuthenticator extends AbstractGuardAuthenticator
+class AppCustomAuthenticator extends AbstractGuardAuthenticator
 {
     private $em;
 

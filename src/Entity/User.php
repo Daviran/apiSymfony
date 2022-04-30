@@ -3,14 +3,16 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Serializer\Annotation\Ignore;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
- * @UniqueEntity(fields={"email"}, message="There is already an account with this email")
+ * @ORM\Table(name="`user`")
  */
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
@@ -22,10 +24,27 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255, unique=true)
+     * @ORM\Column(type="string", length=180, unique=true)
      */
     private $email;
 
+    /**
+     * @ORM\Column(type="string", length=180, unique=true)
+     */
+    private $login; 
+    
+    /**
+     * @ORM\Column(type="string", length=180, nullable="true")
+     */
+    private $firstname;
+
+    /**
+     * @ORM\Column(type="string", length=180, nullable="true")
+     */
+    private $lastname;
+
+
+    
     /**
      * @ORM\Column(type="json")
      */
@@ -38,19 +57,21 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private $password;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\ManyToMany(targetEntity=Product::class, inversedBy="users")
+     * @Ignore()
      */
-    private $login;
+    private $products;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\OneToMany(targetEntity=Order::class, mappedBy="user")
      */
-    private $firstname;
+    private $ordr;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $lastname;
+    public function __construct()
+    {
+        $this->products = new ArrayCollection();
+        $this->ordr = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -65,6 +86,42 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setEmail(string $email): self
     {
         $this->email = $email;
+
+        return $this;
+    }
+
+    public function getLogin(): ?string
+    {
+        return $this->login;
+    }
+
+    public function setLogin(string $login): self
+    {
+        $this->login = $login;
+
+        return $this;
+    }
+
+    public function getFirstname(): ?string
+    {
+        return $this->firstname;
+    }
+
+    public function setFirstname(string $firstname): self
+    {
+        $this->firstname = $firstname;
+
+        return $this;
+    }
+
+    public function getLastname(): ?string
+    {
+        return $this->lastname;
+    }
+
+    public function setLastname(string $lastname): self
+    {
+        $this->lastname = $lastname;
 
         return $this;
     }
@@ -141,38 +198,56 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         // $this->plainPassword = null;
     }
 
-    public function getLogin(): ?string
+    /**
+     * @return Collection<int, Product>
+     */
+    public function getProducts(): Collection
     {
-        return $this->login;
+        return $this->products;
     }
 
-    public function setLogin(string $login): self
+        public function addProduct(Product $product): self
+        {
+            if (!$this->products->contains($product)) {
+                $this->products[] = $product;
+            }
+
+            return $this;
+        }
+
+        public function removeProduct(Product $product): self
+        {
+            $this->products->removeElement($product);
+
+            return $this;
+        }
+
+    /**
+     * @return Collection<int, Order>
+     */
+    public function getOrdr(): Collection
     {
-        $this->login = $login;
+        return $this->ordr;
+    }
+
+    public function addOrdr(Order $ordr): self
+    {
+        if (!$this->ordr->contains($ordr)) {
+            $this->ordr[] = $ordr;
+            $ordr->setUser($this);
+        }
 
         return $this;
     }
 
-    public function getFirstname(): ?string
+    public function removeOrdr(Order $ordr): self
     {
-        return $this->firstname;
-    }
-
-    public function setFirstname(?string $firstname): self
-    {
-        $this->firstname = $firstname;
-
-        return $this;
-    }
-
-    public function getLastname(): ?string
-    {
-        return $this->lastname;
-    }
-
-    public function setLastname(?string $lastname): self
-    {
-        $this->lastname = $lastname;
+        if ($this->ordr->removeElement($ordr)) {
+            // set the owning side to null (unless already changed)
+            if ($ordr->getUser() === $this) {
+                $ordr->setUser(null);
+            }
+        }
 
         return $this;
     }
