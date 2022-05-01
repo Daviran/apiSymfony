@@ -273,6 +273,13 @@
         <argument type="service" id=".service_locator.GNc8e5B.App\Controller\CartController"/>
       </call>
     </service>
+    <service id="App\Controller\OrderController" class="App\Controller\OrderController" public="true" autowire="true" autoconfigure="true">
+      <tag name="controller.service_arguments"/>
+      <tag name="container.service_subscriber"/>
+      <call method="setContainer">
+        <argument type="service" id=".service_locator.GNc8e5B.App\Controller\OrderController"/>
+      </call>
+    </service>
     <service id="App\Controller\ProductController" class="App\Controller\ProductController" public="true" autowire="true" autoconfigure="true">
       <tag name="controller.service_arguments"/>
       <tag name="container.service_subscriber"/>
@@ -5339,6 +5346,9 @@
     <service id=".instanceof.Symfony\Contracts\Service\ServiceSubscriberInterface.0.App\Controller\CartController" class="App\Controller\CartController" autowire="true" abstract="true"/>
     <service id=".instanceof.Symfony\Bundle\FrameworkBundle\Controller\AbstractController.0.App\Controller\CartController" class="App\Controller\CartController" autowire="true" abstract="true"/>
     <service id=".abstract.instanceof.App\Controller\CartController" class="App\Controller\CartController" autowire="true" autoconfigure="true" abstract="true"/>
+    <service id=".instanceof.Symfony\Contracts\Service\ServiceSubscriberInterface.0.App\Controller\OrderController" class="App\Controller\OrderController" autowire="true" abstract="true"/>
+    <service id=".instanceof.Symfony\Bundle\FrameworkBundle\Controller\AbstractController.0.App\Controller\OrderController" class="App\Controller\OrderController" autowire="true" abstract="true"/>
+    <service id=".abstract.instanceof.App\Controller\OrderController" class="App\Controller\OrderController" autowire="true" autoconfigure="true" abstract="true"/>
     <service id=".instanceof.Symfony\Contracts\Service\ServiceSubscriberInterface.0.App\Controller\ProductController" class="App\Controller\ProductController" autowire="true" abstract="true"/>
     <service id=".instanceof.Symfony\Bundle\FrameworkBundle\Controller\AbstractController.0.App\Controller\ProductController" class="App\Controller\ProductController" autowire="true" abstract="true"/>
     <service id=".abstract.instanceof.App\Controller\ProductController" class="App\Controller\ProductController" autowire="true" autoconfigure="true" abstract="true"/>
@@ -5679,6 +5689,13 @@
         <argument key="userService" type="service_closure" id="App\Service\UserService"/>
       </argument>
     </service>
+    <service id=".service_locator.Pn_o7Tb" class="Symfony\Component\DependencyInjection\ServiceLocator">
+      <tag name="container.service_locator"/>
+      <argument type="collection">
+        <argument key="orderRepository" type="service_closure" id="App\Repository\OrderRepository"/>
+        <argument key="userService" type="service_closure" id="App\Service\UserService"/>
+      </argument>
+    </service>
     <service id=".service_locator.JeTwYn4" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator"/>
       <argument type="collection">
@@ -5692,35 +5709,54 @@
         <argument key="userPasswordHasher" type="service_closure" id="security.user_password_hasher"/>
       </argument>
     </service>
-    <service id=".service_locator.J5jtL2a" class="Symfony\Component\DependencyInjection\ServiceLocator">
+    <service id=".service_locator.GeqSJ2C" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator"/>
       <argument type="collection">
-        <argument key="App\Controller\CartController::AddOrDeleteToCart" type="service_closure" id=".service_locator.F2rUNHk"/>
+        <argument key="userAuthenticator" type="service_closure" id="security.user_authenticator"/>
+        <argument key="userPasswordHasher" type="service_closure" id="security.user_password_hasher"/>
+        <argument key="userService" type="service_closure" id="App\Service\UserService"/>
+      </argument>
+    </service>
+    <service id=".service_locator.S0KeqY2" class="Symfony\Component\DependencyInjection\ServiceLocator">
+      <tag name="container.service_locator"/>
+      <argument type="collection">
+        <argument key="userPasswordHasher" type="service_closure" id="security.user_password_hasher"/>
+        <argument key="userService" type="service_closure" id="App\Service\UserService"/>
+      </argument>
+    </service>
+    <service id=".service_locator.UQC4GT3" class="Symfony\Component\DependencyInjection\ServiceLocator">
+      <tag name="container.service_locator"/>
+      <argument type="collection">
+        <argument key="App\Controller\CartController::AddToCart" type="service_closure" id=".service_locator.F2rUNHk"/>
         <argument key="App\Controller\CartController::deleteFromCart" type="service_closure" id=".service_locator.F2rUNHk"/>
         <argument key="App\Controller\CartController::showCart" type="service_closure" id=".service_locator.XQf.Q62"/>
         <argument key="App\Controller\CartController::validate" type="service_closure" id=".service_locator.XQf.Q62"/>
+        <argument key="App\Controller\OrderController::showOneOrder" type="service_closure" id=".service_locator.Pn_o7Tb"/>
+        <argument key="App\Controller\OrderController::showOrder" type="service_closure" id=".service_locator.XQf.Q62"/>
         <argument key="App\Controller\ProductController::showAll" type="service_closure" id=".service_locator.JeTwYn4"/>
         <argument key="App\Controller\ProductController::showOne" type="service_closure" id=".service_locator.JeTwYn4"/>
         <argument key="App\Controller\ProductController::update" type="service_closure" id=".service_locator.JeTwYn4"/>
         <argument key="App\Controller\UserController::register" type="service_closure" id=".service_locator.JCLrHCi"/>
-        <argument key="App\Controller\UserController::show" type="service_closure" id=".service_locator.JCLrHCi"/>
-        <argument key="App\Controller\UserController::update" type="service_closure" id=".service_locator.JCLrHCi"/>
+        <argument key="App\Controller\UserController::show" type="service_closure" id=".service_locator.GeqSJ2C"/>
+        <argument key="App\Controller\UserController::update" type="service_closure" id=".service_locator.S0KeqY2"/>
         <argument key="App\Kernel::loadRoutes" type="service_closure" id=".service_locator.KfbR3DY"/>
         <argument key="App\Kernel::registerContainerConfiguration" type="service_closure" id=".service_locator.KfbR3DY"/>
         <argument key="App\Kernel::terminate" type="service_closure" id=".service_locator.KfwZsne"/>
         <argument key="kernel::loadRoutes" type="service_closure" id=".service_locator.KfbR3DY"/>
         <argument key="kernel::registerContainerConfiguration" type="service_closure" id=".service_locator.KfbR3DY"/>
         <argument key="kernel::terminate" type="service_closure" id=".service_locator.KfwZsne"/>
-        <argument key="App\Controller\CartController:AddOrDeleteToCart" type="service_closure" id=".service_locator.F2rUNHk"/>
+        <argument key="App\Controller\CartController:AddToCart" type="service_closure" id=".service_locator.F2rUNHk"/>
         <argument key="App\Controller\CartController:deleteFromCart" type="service_closure" id=".service_locator.F2rUNHk"/>
         <argument key="App\Controller\CartController:showCart" type="service_closure" id=".service_locator.XQf.Q62"/>
         <argument key="App\Controller\CartController:validate" type="service_closure" id=".service_locator.XQf.Q62"/>
+        <argument key="App\Controller\OrderController:showOneOrder" type="service_closure" id=".service_locator.Pn_o7Tb"/>
+        <argument key="App\Controller\OrderController:showOrder" type="service_closure" id=".service_locator.XQf.Q62"/>
         <argument key="App\Controller\ProductController:showAll" type="service_closure" id=".service_locator.JeTwYn4"/>
         <argument key="App\Controller\ProductController:showOne" type="service_closure" id=".service_locator.JeTwYn4"/>
         <argument key="App\Controller\ProductController:update" type="service_closure" id=".service_locator.JeTwYn4"/>
         <argument key="App\Controller\UserController:register" type="service_closure" id=".service_locator.JCLrHCi"/>
-        <argument key="App\Controller\UserController:show" type="service_closure" id=".service_locator.JCLrHCi"/>
-        <argument key="App\Controller\UserController:update" type="service_closure" id=".service_locator.JCLrHCi"/>
+        <argument key="App\Controller\UserController:show" type="service_closure" id=".service_locator.GeqSJ2C"/>
+        <argument key="App\Controller\UserController:update" type="service_closure" id=".service_locator.S0KeqY2"/>
         <argument key="kernel:loadRoutes" type="service_closure" id=".service_locator.KfbR3DY"/>
         <argument key="kernel:registerContainerConfiguration" type="service_closure" id=".service_locator.KfbR3DY"/>
         <argument key="kernel:terminate" type="service_closure" id=".service_locator.KfwZsne"/>
@@ -5876,6 +5912,12 @@
       <argument type="service" id="service_container"/>
       <factory service=".service_locator.GNc8e5B" method="withContext"/>
     </service>
+    <service id=".service_locator.GNc8e5B.App\Controller\OrderController" class="Symfony\Component\DependencyInjection\ServiceLocator">
+      <tag name="container.service_locator_context" id="App\Controller\OrderController"/>
+      <argument>App\Controller\OrderController</argument>
+      <argument type="service" id="service_container"/>
+      <factory service=".service_locator.GNc8e5B" method="withContext"/>
+    </service>
     <service id=".service_locator.GNc8e5B.App\Controller\ProductController" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator_context" id="App\Controller\ProductController"/>
       <argument>App\Controller\ProductController</argument>
@@ -6020,12 +6062,12 @@
       <argument type="service" id="security.token_storage"/>
     </service>
     <service id="debug.argument_resolver.service.inner" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\ServiceValueResolver">
-      <argument type="service" id=".service_locator.J5jtL2a"/>
+      <argument type="service" id=".service_locator.UQC4GT3"/>
     </service>
     <service id="debug.argument_resolver.default.inner" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\DefaultValueResolver"/>
     <service id="debug.argument_resolver.variadic.inner" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\VariadicValueResolver"/>
     <service id="debug.argument_resolver.not_tagged_controller.inner" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\NotTaggedControllerValueResolver">
-      <argument type="service" id=".service_locator.J5jtL2a"/>
+      <argument type="service" id=".service_locator.UQC4GT3"/>
     </service>
     <service id="fos_rest.serializer.form_error_handler.inner" class="JMS\Serializer\Handler\FormErrorHandler">
       <argument>null</argument>
@@ -6777,7 +6819,7 @@
     <service id="lexik_jwt_authentication.key_loader" alias="lexik_jwt_authentication.key_loader.raw" public="true"/>
     <service id="container.env_var_processors_locator" alias=".service_locator.gSv9zYw" public="true"/>
     <service id="twig.loader.filesystem" alias="twig.loader.native_filesystem"/>
-    <service id="argument_resolver.controller_locator" alias=".service_locator.J5jtL2a"/>
+    <service id="argument_resolver.controller_locator" alias=".service_locator.UQC4GT3"/>
     <service id="session" alias=".session.do-not-use" public="true">
       <deprecated package="symfony/framework-bundle" version="5.3">The "%alias_id%" service and "SessionInterface" alias are deprecated, use "$requestStack-&gt;getSession()" instead.</deprecated>
     </service>
@@ -6792,7 +6834,9 @@
     <service id=".service_locator.Rlg80n6" alias=".service_locator.WfO.0Vv"/>
     <service id=".service_locator.0GV1BZZ" alias=".service_locator.gSv9zYw"/>
     <service id=".service_locator.cvmzh.k" alias=".service_locator.JCLrHCi"/>
-    <service id=".service_locator.T8FW2cW" alias=".service_locator.J5jtL2a"/>
+    <service id=".service_locator.O78wjXP" alias=".service_locator.GeqSJ2C"/>
+    <service id=".service_locator.r1MAr51" alias=".service_locator.S0KeqY2"/>
+    <service id=".service_locator.zdmPQ_." alias=".service_locator.UQC4GT3"/>
     <service id=".service_locator.wKF4yn1" alias=".service_locator.19_mNxd"/>
     <service id=".service_locator.Za9MpXe" alias=".service_locator.y4dplYt"/>
     <service id=".service_locator.4hi2aOY" alias=".service_locator.bBRwv06"/>
@@ -6824,8 +6868,11 @@
     <service id=".service_locator.JBAFp66" alias=".service_locator.KfbR3DY"/>
     <service id=".service_locator.vqgpiQL" alias=".service_locator.XQf.Q62"/>
     <service id=".service_locator.hHFh7YF" alias=".service_locator.F2rUNHk"/>
+    <service id=".service_locator.homYWKF" alias=".service_locator.Pn_o7Tb"/>
     <service id=".service_locator.0.yQVTX" alias=".service_locator.JeTwYn4"/>
     <service id=".service_locator.w86F47A" alias=".service_locator.JCLrHCi"/>
+    <service id=".service_locator.0Hli3Pp" alias=".service_locator.GeqSJ2C"/>
+    <service id=".service_locator.2QfxnM_" alias=".service_locator.S0KeqY2"/>
     <service id=".service_locator.NK827YO" alias=".service_locator.GNc8e5B"/>
     <service id=".service_locator.rbkQM6D" alias=".service_locator._IghnoT"/>
     <service id=".service_locator.L0rFhJm" alias=".service_locator.GVyCdgr"/>

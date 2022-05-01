@@ -24,6 +24,7 @@ class Order
 
     /**
      * @ORM\OneToMany(targetEntity=Product::class, mappedBy="ordr")
+     * @Ignore()
      */
     private $products;
 
@@ -40,6 +41,7 @@ class Order
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="ordr")
      * @ORM\JoinColumn(nullable=false)
+     * @Ignore()
      */
     private $user;
 

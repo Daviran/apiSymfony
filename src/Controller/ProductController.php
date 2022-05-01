@@ -60,7 +60,7 @@ class ProductController extends ApiController
         $entityManager->flush();
 
 
-        return $this->json('product ' . $product->getName() . ' created successfully');
+        return $this->json($product);
     }
 
     /**
@@ -99,6 +99,6 @@ class ProductController extends ApiController
         $entityManager->flush();
 
 
-        return $this->json('product ' . $product->getName() . ' updated successfully');
+        return $this->json($product);
     }
 }

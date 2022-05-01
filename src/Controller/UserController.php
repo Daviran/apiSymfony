@@ -4,6 +4,8 @@ namespace App\Controller;
 
 use App\Entity\User;
 use Doctrine\DBAL\Driver\Exception;
+use App\Service\UserService;
+
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
@@ -27,7 +29,7 @@ class UserController extends ApiController
         $firstname = $request->get('firstname', '');
         $lastname = $request->get('lastname', '');
 
-        if (empty($email) || empty($login) || empty($password)){
+        if (empty($email) || empty($password)){
             return $this->respondValidationError("Invalid Credentials.");
         }
         $user->setLogin($login);
@@ -47,26 +49,49 @@ class UserController extends ApiController
         $serializer = $this->container->get('serializer');
         $reports = $serializer->serialize($user, 'json');
 
-        return $this->respondWithSuccess(sprintf('User %s  created', $user->getEmail()));
+        return $this->json($user);
     }
     /**
      * @Route("/api/users", name="app_user_show", methods={"GET"})
      */
-    public function show(Request $request, UserPasswordHasherInterface $userPasswordHasher, UserAuthenticatorInterface $userAuthenticator): Response
+    public function show(Request $request, UserService $userService, UserPasswordHasherInterface $userPasswordHasher, UserAuthenticatorInterface $userAuthenticator): Response
     {
-        return new Response('users information');
+        return $this->json($userService->getCurrentUser());
     }
     /**
      * @Route("/api/users", name="app_user_update", methods={"PUT"})
      */
-    public function update(Request $request, UserPasswordHasherInterface $userPasswordHasher, UserAuthenticatorInterface $userAuthenticator): Response
+    public function update(Request $request, UserService $userService, UserPasswordHasherInterface $userPasswordHasher): Response
     {
         $request = $this->transformJsonBody($request);
-        $email = $request->get('email', '');
-        $login = $request->get('login', '');
-        $firstname = $request->get('firstname', '');
-        $lastname = $request->get('lastname', '');
 
-        return new Response('Update of user:  ' . $email . $login ."firstname: ".$firstname . "\n lastname:" .$lastname );
+        $user = $userService->getCurrentUser();
+
+        $email = $request->get('email', $user->getEmail());
+        $login = $request->get('login', $user->getLogin());
+        if ($request->getPassword()) {
+            $password = $request->get('password', $user->getPassword());
+        } else {
+            $password = null;
+        }
+        $firstname = $request->get('firstname', $user->getFirstname());
+        $lastname = $request->get('lastname', $user->getLastname());
+
+        $user->setLogin($login);
+        $user->setEmail($email);
+        $user->setFirstname($firstname);
+        $user->setLastname($lastname);
+        if ($password) {
+            $user->setPassword($userPasswordHasher->hashPassword($user, $password));
+        }
+        $entityManager = $this->getDoctrine()->getManager();
+        try {
+            $entityManager->persist($user);
+            $entityManager->flush();
+        } catch (Exception $e) {
+            return $this->respondValidationError($e->getMessage());
+        }
+
+        return  $this->json($userService->getCurrentUser());
     }
 }

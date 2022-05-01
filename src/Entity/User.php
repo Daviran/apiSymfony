@@ -64,6 +64,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @ORM\OneToMany(targetEntity=Order::class, mappedBy="user")
+     * @Ignore()
      */
     private $ordr;
 
@@ -198,9 +199,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         // $this->plainPassword = null;
     }
 
-    /**
-     * @return Collection<int, Product>
-     */
     public function getProducts(): Collection
     {
         return $this->products;
@@ -222,9 +220,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             return $this;
         }
 
-    /**
-     * @return Collection<int, Order>
-     */
     public function getOrdr(): Collection
     {
         return $this->ordr;
