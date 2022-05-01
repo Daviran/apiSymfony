@@ -1,0 +1,28 @@
+<div>
+    <div class='card'>
+        <div class='card-header'>
+            <span class='h3'>{{title}}</span>
+        </div>
+        <div class='card-body'>
+            <div class='table-responsive'>
+                <table class='table'>
+                    <thead>
+                    <tr>
+                        <th>Order ID</th>
+                        <th>Total Price</th>
+                        <th>Creation date</th>
+                        <th >Products</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr *ngFor='let command of order'>
+                        <th>{{command.id}}</th>
+                        <th>{{command.totalPrice}}</th>
+                        <th>{{command.creationDate}}</th>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+  </div>
