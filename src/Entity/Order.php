@@ -24,7 +24,7 @@ class Order
 
     /**
      * @ORM\OneToMany(targetEntity=Product::class, mappedBy="ordr")
-     * @Ignore()
+     * 
      */
     private $products;
 
